@@ -1,0 +1,4 @@
+export const BRANDSACTIONS = {
+    SET_BRANDS: "SET_BRANDS",
+    SET_ERROR: "SET_ERROR",
+}

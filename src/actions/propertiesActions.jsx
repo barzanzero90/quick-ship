@@ -1,0 +1,4 @@
+export const PROPERTIESACTIONS = {
+  SET_COLORS: "SET_COLORS",
+  SET_ERROR: "SET_ERROR",
+};
