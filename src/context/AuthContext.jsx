@@ -21,6 +21,11 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
+  sendEmailVerification,
+  reauthenticateWithCredential,
+  onAuthStateChanged,
+  EmailAuthProvider,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -243,7 +248,7 @@ export function AuthProvider({ children }) {
       await updateDoc(userDoc, userData);
     } catch (error) {
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
-      console.error(error.message);
+      console.error(error.message, error.code);
     }
   };
 

@@ -14,25 +14,19 @@ const EditProfileModal = ({
   const { editProfile, dispatch } = useAuth();
   const [fullName, setFullName] = useState(user.fullName);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-  const [email, setEmail] = useState(user.email);
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
 
     try {
-      if (
-        fullName.trim() != "" &&
-        phoneNumber.trim() != "" &&
-        email.trim() != ""
-      ) {
+      if (fullName.trim() != "" && phoneNumber.trim() != "") {
         const userData = {
           fullName,
           phoneNumber,
-          email,
+          email: user.email,
         };
 
         await editProfile(userData);
-        alert("هەژمارەکەت بەسەرکەوتووی نوێکرایەوە");
         setShowEditProfileModal(false);
       }
     } catch (error) {
@@ -48,7 +42,7 @@ const EditProfileModal = ({
       style={{ zIndex: 999 }}
     >
       <div
-        className="edit-profile absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[260px] bg-white rounded-md flex flex-col justify-start items-start gap-2.5 p-2"
+        className="edit-profile absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] bg-white rounded-md flex flex-col justify-start items-start gap-2.5 p-2"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center w-full px-2">
@@ -79,15 +73,6 @@ const EditProfileModal = ({
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="ژمارەی مۆبایل"
             className="edit-profile-input w-[350px] border border-[#e4e4e5] rounded-md p-2 text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            required
-          />
-
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="ئیمەیڵ"
-            className="edit-profile-input w-[350px] border border-[#e4e4e5] rounded-md p-2 text-right"
             required
           />
 
