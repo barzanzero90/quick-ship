@@ -39,37 +39,37 @@ const LoginPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col gap-5 py-5 items-center w-[450px] h-[525px] mainShadow rounded-md">
+      <div className="auth flex flex-col gap-5 py-5 items-center w-[450px] h-[525px] mainShadow rounded-md">
         <h2 className="text-xl font-semibold">چوونەژوورەوە</h2>
 
-        <div className="flex flex-col justify-center items-center gap-6">
+        <div className="w-full flex flex-col justify-center items-center gap-6">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="ئیمەیڵ"
-            className="w-[400px] p-2 border border-[#e4e4e5] rounded-md text-right"
+            className="auth-input-and-btn w-[400px] p-2 border border-[#e4e4e5] rounded-md text-right"
             required
           />
 
-          <div className="flex flex-col justify-start items-start gap-1">
+          <div className="w-full flex flex-col justify-center items-center gap-1">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="وشەی نهێنی"
-              className="w-[400px] p-2 border border-[#e4e4e5] rounded-md text-right"
+              className="auth-input-and-btn w-[400px] p-2 border border-[#e4e4e5] rounded-md text-right"
               required
             />
 
-            <Link to="/forgot-password" className="text-gray-400">
+            <Link to="/forgot-password" className="text-gray-400 mr-auto ml-0 px-7 text-center">
               وشەی نهێنیت لەبیر کردووە؟
             </Link>
           </div>
 
           <button
             onClick={handleLoginUser}
-            className="w-[400px] py-3 rounded-md text-[#fff] bg-[#FF6F00] active:scale-95 transfrom transition-all ease-in-out duration-200"
+            className="auth-input-and-btn w-[400px] py-3 rounded-md text-[#fff] bg-[#FF6F00] active:scale-95 transfrom transition-all ease-in-out duration-200"
           >
             چوونەژوورەوە
           </button>
@@ -82,7 +82,7 @@ const LoginPage = () => {
 
           <button
             onClick={googleSignIn}
-            className="flex flex-row-reverse justify-start items-start gap-2 w-[400px] p-2 rounded-md border border-[#e4e4e5] active:scale-95 transfrom transition-all ease-in-out duration-200"
+            className="auth-input-and-btn flex flex-row-reverse justify-start items-start gap-2 w-[400px] p-2 rounded-md border border-[#e4e4e5] active:scale-95 transfrom transition-all ease-in-out duration-200"
           >
             <FcGoogle size={30} />
             <p>بچۆ ژوورەوە لەڕێگای گوگڵ</p>
@@ -90,7 +90,7 @@ const LoginPage = () => {
 
           <button
             onClick={facebookSignIn}
-            className="flex flex-row-reverse justify-start items-start gap-2 w-[400px] p-2 rounded-md border border-[#e4e4e5] active:scale-95 transfrom transition-all ease-in-out duration-200"
+            className="auth-input-and-btn flex flex-row-reverse justify-start items-start gap-2 w-[400px] p-2 rounded-md border border-[#e4e4e5] active:scale-95 transfrom transition-all ease-in-out duration-200"
           >
             <FaFacebookF size={30} color="blue" />
             <p>بچۆ ژوورەوە لەڕێگای فەیسبووک</p>

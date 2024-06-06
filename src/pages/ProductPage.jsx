@@ -121,7 +121,7 @@ const ProductPage = () => {
             <div className="flex justify-start items-start gap-2">
               <Suspense fallback={<>Loading...</>}>
                 <div className="product-images flex flex-row-reverse justify-start items-start gap-2">
-                  <div className="flex flex-col justify-start items-center gap-2">
+                  <div className="product-right-images flex flex-col justify-start items-center gap-2">
                     {product.productImageURLS.map((productImageURL, index) => (
                       <img
                         key={index}
@@ -140,7 +140,7 @@ const ProductPage = () => {
                   <div>
                     <img
                       src={product.productImageURLS[selectedImageIndex]}
-                      className="w-full h-[300px] rounded-md"
+                      className="w-full h-[500px] rounded-md"
                       alt=""
                     />
                   </div>
@@ -150,7 +150,9 @@ const ProductPage = () => {
 
             <div className="product-info flex flex-col justify-start items-start gap-4">
               <h1 className="text-2xl font-bold">{product.productName}</h1>
-              <p className="max-w-[500px]">وەسف : {product.productDescription}</p>
+              <p className="max-w-[500px]">
+                وەسف : {product.productDescription}
+              </p>
               <p>
                 ماوەی گەیاندن: <strong>{product.shippingDays} ڕۆژ</strong>
               </p>
@@ -346,7 +348,11 @@ const ProductPage = () => {
                 <button
                   onClick={() =>
                     user
-                      ? setShowUserAddressModal(!showUserAddressModal)
+                      ? user.userMoney >= totalPrice
+                        ? setShowUserAddressModal(!showUserAddressModal)
+                        : alert(
+                            "ناتوانیت داوای ئەم بەرهەمە بکەیت، چونکە باڵانسی پێویستت نییە"
+                          )
                       : alert("تکایە سەرەتا بچۆ ژوورەوە")
                   }
                   className="bg-[#FF6F00] text-white p-2 rounded-md hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"

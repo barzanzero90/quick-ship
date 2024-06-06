@@ -135,7 +135,7 @@ const AdminProductPage = () => {
                         <div>
                           <img
                             src={product.productImageURLS[selectedImageIndex]}
-                            className="w-full h-[300px] rounded-md"
+                            className="w-full h-[500px] rounded-md"
                             alt=""
                           />
                         </div>

@@ -27,6 +27,7 @@ const EditProfileModal = ({
         };
 
         await editProfile(userData);
+        alert("هەژمارەکەت بەسەرکەوتووی نوێکرایەوە")
         setShowEditProfileModal(false);
       }
     } catch (error) {

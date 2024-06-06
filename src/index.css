@@ -69,7 +69,7 @@ body.modal-active {
   }
 }
 
-@media (max-width: 881px) {
+@media (max-width: 973px) {
   .product {
     display: flex;
     flex-direction: column;
@@ -84,6 +84,15 @@ body.modal-active {
     justify-content:  center;
     align-items: center;
     gap: 20px;
+  }
+
+  .product-right-images {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   }
 
   .product-info {
@@ -164,6 +173,24 @@ body.modal-active {
     gap: 2px;
     justify-content: end;
     align-items: end;
+  }
+}
+
+@media (max-width: 460px) {
+  .auth {
+    width: 95%;
+  }
+
+  .auth-input-and-btn {
+    width: 90%;
+  }
+
+  .forgot-password-back-btn {
+    font-size: 16px;
+  }
+
+  .forgot-password-text {
+    font-size: 18px;
   }
 }
 

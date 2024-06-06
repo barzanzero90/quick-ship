@@ -6,7 +6,7 @@ const AdminProductCard = ({ product }) => {
   return (
     <Link
       to={`/admin/product/${product.id}`}
-      className="w-[250px] h-[260px] rounded-md bg-white flex flex-col justify-start items-center gap-4 mainShadow hover:-translate-y-1 active:scale-95 transform transition-all duration-200 ease-in-out"
+      className="w-[250px] rounded-md bg-white flex flex-col justify-start items-center gap-4 mainShadow hover:-translate-y-1 active:scale-95 transform transition-all duration-200 ease-in-out"
     >
       <Suspense fallback={<>Loading...</>}>
         <img
