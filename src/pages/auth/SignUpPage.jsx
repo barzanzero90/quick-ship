@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/firebaseConfig";
+import { Helmet } from "react-helmet";
 
 const SignUpPage = () => {
   const { user, signUpUser, dispatch, googleSignIn, facebookSignIn, loading } =
@@ -86,6 +87,10 @@ const SignUpPage = () => {
           </div>
         ) : (
           <div className="auth flex flex-col gap-5 py-5 items-center w-[450px] h-[625px] mainShadow rounded-md">
+            <Helmet>
+              <title>گەیاندنی خێرا | خۆتۆمارکردن</title>
+            </Helmet>
+
             <h2 className="text-xl font-semibold">خۆتۆمارکردن</h2>
 
             <div className="w-full flex flex-col justify-center items-center gap-4">

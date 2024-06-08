@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useOrders } from "../context/OrdersContext";
 import { FiTrash2 } from "react-icons/fi";
 import { FormatMoney } from "../utils/FormatMoney";
 import { FormatDate } from "../utils/FormatDate";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 const BalanceOrdersPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { orders, deleteOrder } = useOrders();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user && loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   return (
     <>
       {user ? (
         <div className="pt-[30px]">
+          <Helmet>
+            <title>گەیاندنی خێرا | داواکاریەکانی زیادکردنی باڵانس</title>
+          </Helmet>
+
           <div className="flex flex-col gap-5 justify-end items-end w-[95%] p-2 rounded-md mainShadow mx-auto">
             <div className="flex flex-row-reverse justify-between items-center w-full px-2 pb-1.5 border-b border-b-[#e4e4e5]">
               <h2 className="text-xl font-semibold text-right">
@@ -21,15 +34,21 @@ const BalanceOrdersPage = () => {
             </div>
 
             <div className="">
-              {orders.filter((order) => order.orderType == "Balance" && order.user.email == user.email).length ==
-              0 ? (
+              {orders.filter(
+                (order) =>
+                  order.orderType == "Balance" && order.user.email == user.email
+              ).length == 0 ? (
                 <strong className="text-2xl text-right">
                   هیچ داواکاریەکی باڵانست نەکردووە
                 </strong>
               ) : (
                 <div className="balance-orders flex flex-row-reverse flex-wrap justify-start items-end gap-3">
                   {orders
-                    .filter((order) => order.orderType == "Balance" && order.user.email == user.email)
+                    .filter(
+                      (order) =>
+                        order.orderType == "Balance" &&
+                        order.user.email == user.email
+                    )
                     .map((balanceOrder, index) => (
                       <div
                         key={index}

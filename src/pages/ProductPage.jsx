@@ -14,6 +14,7 @@ import { FormatDate } from "../utils/FormatDate";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 import ReviewActionsModal from "../components/modals/ReviewActionsModal";
+import { Helmet } from "react-helmet";
 
 const ProductPage = () => {
   const { productId } = useParams();
@@ -117,6 +118,10 @@ const ProductPage = () => {
     <div className="pt-[30px] w-full">
       {product ? (
         <div className="flex flex-col gap-5">
+          <Helmet>
+            <title>{product.productName} | گەیاندنی خێرا</title>
+          </Helmet>
+
           <div className="product flex flex-row-reverse flex-wrap justify-between items-start w-full p-3">
             <div className="flex justify-start items-start gap-2">
               <Suspense fallback={<>Loading...</>}>
@@ -227,12 +232,11 @@ const ProductPage = () => {
                 ) : (
                   <div className="flex flex-col justify-center items-center gap-2">
                     <p className="text-xl">
-                      {FormatMoney(product.productPrice)}
-                      {" "}: نرخ
+                      {FormatMoney(product.productPrice)} : نرخ
                     </p>
                     <p>
-                      {FormatMoney(quantity * product.productPrice)} IQD
-                      : کۆی گستی نرخ 
+                      {FormatMoney(quantity * product.productPrice)} IQD : کۆی
+                      گستی نرخ
                     </p>
                   </div>
                 )}{" "}

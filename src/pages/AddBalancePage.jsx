@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { paymentMethods } from "../data/PaymentMethods";
 import PaymentMethodModal from "../components/modals/PaymentMethodModal";
+import { Helmet } from "react-helmet";
 
 const AddBalancePage = () => {
   const { user } = useAuth();
@@ -10,6 +11,10 @@ const AddBalancePage = () => {
 
   return (
     <div className="pt-[30px]">
+      <Helmet>
+        <title>گەیاندنی خێرا | زیادکردنی باڵانس</title>
+      </Helmet>
+
       <div className="add-balance flex flex-col gap-5 justify-center items-center p-3 border border-[#e4e4e5] w-[400px] rounded-md mx-auto">
         <div className="flex flex-col justify-center items-center gap-3 text-center w-full">
           <h3 className="text-lg font-semibold">زیادکردنی باڵانس</h3>

@@ -4,17 +4,25 @@ import { useProducts } from "../context/ProductsContext";
 import { CgClose, CgMathMinus } from "react-icons/cg";
 import { IoIosAdd } from "react-icons/io";
 import { FormatMoney } from "../utils/FormatMoney";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import UserAddressModal from "../components/modals/UserAddressModal";
+import { Helmet } from "react-helmet";
 
 const CartPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { getUserCart, cart, deleteProductFromCart } = useProducts();
   const [orderNote, setOrderNote] = useState("");
   const [showUserAddressModal, setShowUserAddressModal] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user && loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -230,141 +238,163 @@ const CartPage = () => {
 
   return (
     <div className="pt-[30px]">
-      <div className="w-[95%] p-2 flex flex-col text-right gap-4 mainShadow rounded-md mx-auto">
-        <div className="flex flex-row-reverse justify-between items-center w-full px-2 pb-1.5 border-b border-b-[#e4e4e5]">
-          <h2 className="cart-text text-xl font-semibold">سەبەتەکەم</h2>
+      {user ? (
+        <div className="w-[95%] p-2 flex flex-col text-right gap-4 mainShadow rounded-md mx-auto">
+          <Helmet>
+            <title>گەیاندنی خێرا | سەبەتەکەم</title>
+          </Helmet>
 
-          <strong className="user-cart-balance text-xl">
-            باڵانسەکەم : {FormatMoney(user?.userMoney)} د.ع
-          </strong>
+          <div className="flex flex-row-reverse justify-between items-center w-full px-2 pb-1.5 border-b border-b-[#e4e4e5]">
+            <h2 className="cart-text text-xl font-semibold">سەبەتەکەم</h2>
 
-          <div className="user-cart-balance-text">
-            <strong className="">باڵانسەکەم</strong>
-            <div className="flex flex-row-reverse justify-center items-center gap-0.5">
-              <strong>{FormatMoney(user?.userMoney)}</strong>
-              <strong>د.ع</strong>
+            <strong className="user-cart-balance text-xl">
+              باڵانسەکەم : {FormatMoney(user?.userMoney)} د.ع
+            </strong>
+
+            <div className="user-cart-balance-text">
+              <strong className="">باڵانسەکەم</strong>
+              <div className="flex flex-row-reverse justify-center items-center gap-0.5">
+                <strong>{FormatMoney(user?.userMoney)}</strong>
+                <strong>د.ع</strong>
+              </div>
             </div>
           </div>
-        </div>
 
-        {cart.length > 0 ? (
-          <>
-            <div className="cart">
-              <DataTable
-                columns={columns}
-                data={data}
-                customStyles={customStyles}
-              />
-            </div>
+          {cart.length > 0 ? (
+            <>
+              <div className="cart">
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  customStyles={customStyles}
+                />
+              </div>
 
-            <div className="cart-products flex flex-col justify-center items-center gap-1.5 w-full">
-              {cart.map((cartItem, index) => (
-                <div
-                  key={index}
-                  className="flex flex-row-reverse justify-between items-center w-full p-2 border-b border-b-[#e4e4e5]"
-                >
-                  <Link
-                    to={`/product/${cartItem.product.id}`}
-                    className="flex flex-row-reverse justify-end items-center gap-1"
+              <div className="cart-products flex flex-col justify-center items-center gap-1.5 w-full">
+                {cart.map((cartItem, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-row-reverse justify-between items-center w-full p-2 border-b border-b-[#e4e4e5]"
                   >
-                    <img
-                      src={cartItem.product.productThumbnailImageURL}
-                      className="product-image h-[75px] object-cover"
-                      alt=""
-                    />
+                    <Link
+                      to={`/product/${cartItem.product.id}`}
+                      className="flex flex-row-reverse justify-end items-center gap-1"
+                    >
+                      <img
+                        src={cartItem.product.productThumbnailImageURL}
+                        className="product-image h-[75px] object-cover"
+                        alt=""
+                      />
 
-                    <div className="flex flex-col justify-end items-end gap-6">
-                      <div className="flex flex-col justify-end items-end gap-0.5">
-                        <strong className="text-base font-semibold">
-                          {cartItem.product.productName}
-                        </strong>
+                      <div className="flex flex-col justify-end items-end gap-6">
+                        <div className="flex flex-col justify-end items-end gap-0.5">
+                          <strong className="text-base font-semibold">
+                            {cartItem.product.productName}
+                          </strong>
 
-                        <div className="flex flex-wrap justify-end items-end gap-2">
-                          {cartItem.selectedProductAttributes.map(
-                            (selectedProductAttribute, index) => (
-                              <div key={index}>
-                                <p className="text-xs">
-                                  {selectedProductAttribute.label}
-                                </p>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </div>
-
-                      <strong className="text-base font-semibold">
-                        {cartItem.product.productDiscount ? (
-                          <>
-                            {cartItem.product.discountType == "Flat" ? (
-                              <div className="flex flex-col-reverse justify-center items-center gap-2">
-                                <p className="cart-total-price text-base">
-                                  {FormatMoney(
-                                    cartItem.product.productPrice -
-                                      cartItem.product.productDiscount
-                                  )}{" "}
-                                  IQD
-                                </p>
-
-                                <p className="text-[#969393] text-sm line-through">
-                                  {FormatMoney(
-                                    cartItem.product.productDiscount
-                                  )}{" "}
-                                  IQD
-                                </p>
-
-                                <p className="cart-total-price text-base">
-                                  {FormatMoney(
-                                    cartItem.product.productPrice -
-                                      cartItem.product.productDiscount
-                                  )}{" "}
-                                  IQD
-                                </p>
-                              </div>
-                            ) : (
-                              <div className="flex flex-col-reverse justify-center items-center gap-0.5">
-                                <strong className="cart-total-price text-base">
-                                  {FormatMoney(
-                                    cartItem.product.productPrice *
-                                      (1 -
-                                        cartItem.product.productDiscount / 100)
-                                  )}{" "}
-                                  IQD
-                                </strong>
-                                <p className="text-[#969393] text-sm line-through">
-                                  {FormatMoney(cartItem.product.productPrice)}{" "}
-                                  IQD
-                                </p>
-                              </div>
+                          <div className="flex flex-wrap justify-end items-end gap-2">
+                            {cartItem.selectedProductAttributes.map(
+                              (selectedProductAttribute, index) => (
+                                <div key={index}>
+                                  <p className="text-xs">
+                                    {selectedProductAttribute.label}
+                                  </p>
+                                </div>
+                              )
                             )}
-                          </>
-                        ) : (
-                          <p className="cart-total-price text-base">
-                            {FormatMoney(cartItem.product.productPrice)} IQD
-                          </p>
-                        )}
+                          </div>
+                        </div>
+
+                        <strong className="text-base font-semibold">
+                          {cartItem.product.productDiscount ? (
+                            <>
+                              {cartItem.product.discountType == "Flat" ? (
+                                <div className="flex flex-col-reverse justify-center items-center gap-2">
+                                  <p className="cart-total-price text-base">
+                                    {FormatMoney(
+                                      cartItem.product.productPrice -
+                                        cartItem.product.productDiscount
+                                    )}{" "}
+                                    IQD
+                                  </p>
+
+                                  <p className="text-[#969393] text-sm line-through">
+                                    {FormatMoney(
+                                      cartItem.product.productDiscount
+                                    )}{" "}
+                                    IQD
+                                  </p>
+
+                                  <p className="cart-total-price text-base">
+                                    {FormatMoney(
+                                      cartItem.product.productPrice -
+                                        cartItem.product.productDiscount
+                                    )}{" "}
+                                    IQD
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="flex flex-col-reverse justify-center items-center gap-0.5">
+                                  <strong className="cart-total-price text-base">
+                                    {FormatMoney(
+                                      cartItem.product.productPrice *
+                                        (1 -
+                                          cartItem.product.productDiscount /
+                                            100)
+                                    )}{" "}
+                                    IQD
+                                  </strong>
+                                  <p className="text-[#969393] text-sm line-through">
+                                    {FormatMoney(cartItem.product.productPrice)}{" "}
+                                    IQD
+                                  </p>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <p className="cart-total-price text-base">
+                              {FormatMoney(cartItem.product.productPrice)} IQD
+                            </p>
+                          )}
+                        </strong>
+                      </div>
+                    </Link>
+
+                    <div className="flex flex-col justify-center items-center gap-1">
+                      <strong className="cart-total-price text-base font-semibold">
+                        {FormatMoney(cartItem.totalPrice)} IQD
                       </strong>
-                    </div>
-                  </Link>
 
-                  <div className="flex flex-col justify-center items-center gap-1">
-                    <strong className="cart-total-price text-base font-semibold">
-                      {FormatMoney(cartItem.totalPrice)} IQD
-                    </strong>
-
-                    <div className="flex justify-center items-center gap-2">
-                      {cartItem.quantity === 1 ? (
+                      <div className="flex justify-center items-center gap-2">
+                        {cartItem.quantity === 1 ? (
+                          <button
+                            onClick={() =>
+                              deleteProductFromCart(user?.email, cartItem.id)
+                            }
+                            className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+                          >
+                            <CgMathMinus size={20} />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              decreaseQuantity(
+                                cartItem.id,
+                                cartItem.quantity,
+                                cartItem.totalPrice
+                              )
+                            }
+                            className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+                          >
+                            <CgMathMinus size={20} />
+                          </button>
+                        )}
+                        <p className="text-base font-semibold">
+                          {cartItem.quantity}
+                        </p>
                         <button
                           onClick={() =>
-                            deleteProductFromCart(user?.email, cartItem.id)
-                          }
-                          className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
-                        >
-                          <CgMathMinus size={20} />
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            decreaseQuantity(
+                            increaseQuantity(
                               cartItem.id,
                               cartItem.quantity,
                               cartItem.totalPrice
@@ -372,73 +402,68 @@ const CartPage = () => {
                           }
                           className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
                         >
-                          <CgMathMinus size={20} />
+                          <IoIosAdd size={20} />
                         </button>
-                      )}
-                      <p className="text-base font-semibold">
-                        {cartItem.quantity}
-                      </p>
-                      <button
-                        onClick={() =>
-                          increaseQuantity(
-                            cartItem.id,
-                            cartItem.quantity,
-                            cartItem.totalPrice
-                          )
-                        }
-                        className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
-                      >
-                        <IoIosAdd size={20} />
-                      </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <textarea
+                value={orderNote}
+                onChange={(e) => setOrderNote(e.target.value)}
+                placeholder="تێبینی ئیختیاری"
+                className="text-right w-full border border-[#e4e4e5] rounded-md p-2 resize-none overflow-y-auto"
+              ></textarea>
+
+              <div className="flex flex-row-reverse justify-between items-center w-full px-2">
+                <strong>کۆی گشتی</strong>
+                <strong>{FormatMoney(totalMoney)} IQD</strong>
+              </div>
+
+              <div className="flex justify-end items-end">
+                <button
+                  onClick={() => {
+                    user?.userMoney >= totalMoney
+                      ? setShowUserAddressModal(!showUserAddressModal)
+                      : alert(
+                          "باڵانسی پێویستت نییە بۆ داواکردنی ئەم بەرهەمانە"
+                        );
+                  }}
+                  className="bg-[#FF6F00] w-[150px] text-black rounded-md p-2 transform transition-all duration-100 ease-in-out hover:text-white active:scale-95"
+                >
+                  پشکنین
+                </button>
+
+                {showUserAddressModal && (
+                  <UserAddressModal
+                    showUserAddressModal={showUserAddressModal}
+                    setShowUserAddressModal={setShowUserAddressModal}
+                    user={user}
+                    cart={cart}
+                    orderNote={orderNote}
+                    totalMoney={totalMoney}
+                    isFromCart={true}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex justify-center items-center text-center h-full p-3">
+              <strong className="text-2xl">سەبەتەی کڕین بەتاڵە</strong>
             </div>
-
-            <textarea
-              value={orderNote}
-              onChange={(e) => setOrderNote(e.target.value)}
-              placeholder="تێبینی ئیختیاری"
-              className="text-right w-full border border-[#e4e4e5] rounded-md p-2 resize-none overflow-y-auto"
-            ></textarea>
-
-            <div className="flex flex-row-reverse justify-between items-center w-full px-2">
-              <strong>کۆی گشتی</strong>
-              <strong>{FormatMoney(totalMoney)} IQD</strong>
-            </div>
-
-            <div className="flex justify-end items-end">
-              <button
-                onClick={() => {
-                  user?.userMoney >= totalMoney
-                    ? setShowUserAddressModal(!showUserAddressModal)
-                    : alert("باڵانسی پێویستت نییە بۆ داواکردنی ئەم بەرهەمانە");
-                }}
-                className="bg-[#FF6F00] w-[150px] text-black rounded-md p-2 transform transition-all duration-100 ease-in-out hover:text-white active:scale-95"
-              >
-                پشکنین
-              </button>
-
-              {showUserAddressModal && (
-                <UserAddressModal
-                  showUserAddressModal={showUserAddressModal}
-                  setShowUserAddressModal={setShowUserAddressModal}
-                  user={user}
-                  cart={cart}
-                  orderNote={orderNote}
-                  totalMoney={totalMoney}
-                  isFromCart={true}
-                />
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="flex justify-center items-center text-center h-full p-3">
-            <strong className="text-2xl">سەبەتەی کڕین بەتاڵە</strong>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div
+          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
+      )}
     </div>
   );
 };

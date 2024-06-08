@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AUTHACTIONS } from "../../actions/authActions";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 
 const LoginPage = () => {
   const { user, loginUser, dispatch, googleSignIn, facebookSignIn, loading } =
@@ -52,6 +53,10 @@ const LoginPage = () => {
         </div>
       ) : (
         <div className="auth flex flex-col gap-5 py-5 items-center w-[450px] h-[525px] mainShadow rounded-md">
+          <Helmet>
+              <title>گەیاندنی خێرا | چوونەژوورەوە</title>
+          </Helmet>
+
           <h2 className="text-xl font-semibold">چوونەژوورەوە</h2>
 
           <div className="w-full flex flex-col justify-center items-center gap-6">

@@ -6,13 +6,22 @@ import { BiEdit } from "react-icons/bi";
 import { PiTrash } from "react-icons/pi";
 import EditAddressModal from "../components/modals/EditAddressModal";
 import { IoIosAdd } from "react-icons/io";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 const AddressPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const { getUserAddress, address, countries, getCountries, deleteAddress } =
     useLocations();
   const [showEditAddressModal, setShowEditAddressModal] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!user && loading){
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -25,9 +34,13 @@ const AddressPage = () => {
   }, [countries]);
 
   return (
-    <div>
+    <>
       {user ? (
         <div className="pt-[30px]">
+          <Helmet>
+            <title>گەیاندنی خێرا | ناونیشانەکانم</title>
+          </Helmet>
+
           <div className="flex flex-col justify-end items-end w-[95%] p-2 rounded-md mainShadow mx-auto">
             <div className="flex flex-row-reverse justify-between items-center w-full px-2 pb-1.5 border-b border-b-[#e4e4e5]">
               <h2 className="text-xl font-semibold">ناونیشانەکانم</h2>
@@ -115,9 +128,15 @@ const AddressPage = () => {
           </div>
         </div>
       ) : (
-        <>Loading...</>
+        <div
+          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

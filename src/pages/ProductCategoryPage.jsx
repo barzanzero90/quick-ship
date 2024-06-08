@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useCategories } from "../context/CategoriesContext";
 import { useProducts } from "../context/ProductsContext";
 import ProductCard from "../components/ProductCard";
+import { Helmet } from "react-helmet";
 
 const ProductCategoryPage = () => {
   const { categorySlug } = useParams();
@@ -44,9 +45,13 @@ const ProductCategoryPage = () => {
       );
 
   return (
-    <div>
+    <>
       {category ? (
         <div className="grid grid-cols-3 gap-5 p-3 w-full">
+          <Helmet>
+            <title>{category.categoryName} گەیاندنی خێرا | بەرهەمەکانی</title>
+          </Helmet>
+
           <div className="col-span-2">
             <div className="flex flex-row-reverse flex-wrap justify-center items-center gap-4">
               {filteredProducts.map((product, index) => (
@@ -63,7 +68,9 @@ const ProductCategoryPage = () => {
               <div className="flex flex-col justify-end items-end gap-2">
                 <button
                   onClick={handleShowAllProducts}
-                  className={`text-lg cursor-pointer hover:text-[#FF6F00] transform transition-all ease-in-out duration-100 active:scale-95 ${selectedSubCategory == null ? "text-[#FF6F00]" : ""}`}
+                  className={`text-lg cursor-pointer hover:text-[#FF6F00] transform transition-all ease-in-out duration-100 active:scale-95 ${
+                    selectedSubCategory == null ? "text-[#FF6F00]" : ""
+                  }`}
                 >
                   هەموو
                 </button>
@@ -92,7 +99,7 @@ const ProductCategoryPage = () => {
       ) : (
         <>ئەم بەشە بوونی نییە</>
       )}
-    </div>
+    </>
   );
 };
 

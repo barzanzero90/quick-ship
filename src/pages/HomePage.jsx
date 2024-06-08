@@ -5,6 +5,7 @@ import NewestProducts from "../components/NewestProducts";
 import CategoryProducts from "../components/CategoryProducts";
 import { useProducts } from "../context/ProductsContext";
 import { useCategories } from "../context/CategoriesContext";
+import { Helmet } from "react-helmet";
 
 const HomePage = () => {
   const { user, logOutUser } = useAuth();
@@ -21,6 +22,10 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-12 w-full pb-3">
+      <Helmet>
+        <title>گەیاندنی خێرا</title>
+      </Helmet>
+
       {products.slice(0, 1).map((product) => (
         <Hero key={product.id} product={product} />
       ))}

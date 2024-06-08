@@ -1,24 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FormatMoney } from "../utils/FormatMoney";
 import { FiEdit } from "react-icons/fi";
 import { IoIosHeartEmpty, IoIosLogOut } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { LiaMoneyCheckAltSolid } from "react-icons/lia";
 import { CiCircleList, CiStar } from "react-icons/ci";
 import { FaRegAddressCard } from "react-icons/fa";
 import EditProfileModal from "../components/modals/EditProfileModal";
 import { GrUserAdmin } from "react-icons/gr";
+import { Helmet } from "react-helmet";
 
 const ProfilePage = () => {
-  const { user, logOutUser } = useAuth();
+  const { user, logOutUser, loading } = useAuth();
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user && loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   return (
     <div className="pt-5">
       {user ? (
         <div className="flex flex-col justify-center items-center gap-5 p-2">
+          <Helmet>
+            <title>گەیاندنی خێرا | هەژمارەکەم</title>
+          </Helmet>
+
           <div className="mainShadow w-full sm:h-[250px] p-2 flex flex-col gap-7 sm:flex-row-reverse sm:justify-between justify-center sm:items-start items-center rounded-md">
             <div className="flex flex-col sm:justify-end sm:items-end justify-center items-center gap-3">
               <img
@@ -136,7 +148,13 @@ const ProfilePage = () => {
           </div>
         </div>
       ) : (
-        <>Loading...</>
+        <div
+          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
       )}
     </div>
   );

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import DataTable from "react-data-table-component";
 import { useOrders } from "../context/OrdersContext";
 import { FormatMoney } from "../utils/FormatMoney";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormatDate } from "../utils/FormatDate";
 import AddReviewModal from "../components/modals/AddReviewModal";
 import { useReviews } from "../context/ReviewsContext";
+import { Helmet } from "react-helmet";
 
 // Function to get the status from the orderStatus object
 const getStatus = (status) => {
@@ -19,11 +20,18 @@ const getStatus = (status) => {
 };
 
 const MyOrdersPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { orders, cancelOrder } = useOrders();
   const [showAddReviewModal, setShowAddReviewModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const { reviews } = useReviews();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user && loading) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   const handleAddReview = (selectedOrder) => {
     setSelectedOrder(selectedOrder);
@@ -161,6 +169,10 @@ const MyOrdersPage = () => {
     <>
       {user ? (
         <div className="pt-[30px]">
+          <Helmet>
+            <title>گەیاندنی خێرا | داواکاریەکانم</title>
+          </Helmet>
+
           <div className="flex flex-col justify-end items-end w-[95%] p-2 rounded-md mainShadow mx-auto">
             <div className="flex flex-row-reverse justify-between items-center w-full px-2 pb-1.5 border-b border-b-[#e4e4e5]">
               <h2 className="text-xl font-semibold">داواکاریەکانم</h2>
@@ -281,7 +293,13 @@ const MyOrdersPage = () => {
           )}
         </div>
       ) : (
-        <>Loading...</>
+        <div
+          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
       )}
     </>
   );
