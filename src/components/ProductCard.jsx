@@ -90,7 +90,7 @@ const ProductCard = ({ product }) => {
         className="absolute bottom-0 right-0 w-full h-10 p-1.5 flex flex-row-reverse justify-between items-center bg-black/50 text-white rounded-br-md rounded-bl-md"
       >
         <strong className="text-2xl">{product.productName}</strong>
-        <strong className="text-lg">
+        <strong className="text-lg whitespace-nowrap">
           {FormatMoney(product.productPrice)} IQD
         </strong>
       </Link>

@@ -15,7 +15,7 @@
   src: url("assets/fonts/NRT-Reg.ttf");
 }
 
-body {
+html, body {
   font-family: nrt-reg-font;
 }
 
@@ -179,7 +179,7 @@ body.modal-active {
   }
 }
 
-@media (max-width: 526px) {
+@media (max-width: 550px) {
   .product-reviews {
     display: flex;
     justify-content: center;
@@ -227,8 +227,9 @@ body.modal-active {
 
 @media (max-width: 450px) {
   .user-profile-info {
-    width: 250px;
+    width: 170px;
     height: 100px;
+    text-align: right;
   }
 }
 
@@ -279,6 +280,14 @@ body.modal-active {
 
   .product-image {
     height: 50px;
+  }
+}
+
+@media (max-width: 372px) {
+  .user-profile-info {
+    width: 97%;
+    height: 100px;
+    text-align: right;
   }
 }
 

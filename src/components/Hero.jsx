@@ -48,11 +48,13 @@ const Hero = ({ product }) => {
   return (
     <div className="hero relative bg-[#F5E5D7] w-full h-[600px] flex flex-col justify-center items-center gap-5 pt-48 pb-2">
       <div className="hero flex flex-wrap flex-row-reverse justify-start items-center mx-auto gap-10">
-        <img
-          src={product.productThumbnailImageURL}
-          className="w-[350px] h-[400px] rounded-md"
-          alt=""
-        />
+        <Link to={`/product/${product.id}`}>
+          <img
+            src={product.productThumbnailImageURL}
+            className="w-[350px] h-[400px] rounded-md"
+            alt=""
+          />
+        </Link>
 
         <div className="flex flex-col justify-end items-end gap-3">
           <Link

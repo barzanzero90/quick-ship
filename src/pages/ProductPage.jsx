@@ -630,7 +630,13 @@ const ProductPage = () => {
           </div>
         </div>
       ) : (
-        <>Loading...</>
+        <div
+          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
       )}
     </div>
   );
