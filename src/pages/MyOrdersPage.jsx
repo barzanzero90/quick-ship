@@ -244,7 +244,7 @@ const MyOrdersPage = () => {
                             {!order.orderStatus.isCompleted &&
                               !order.orderStatus.isCancelled && (
                                 <button
-                                  onClick={() => cancelOrder(order.id)}
+                                  onClick={() => cancelOrder(order)}
                                   className="hover:bg-[#e42727] border border-[#e42727] text-[#e42727] transform transition-all ease-in-out duration-100 hover:text-white active:scale-95 px-1 py-2 rounded-md"
                                 >
                                   هەڵوەشاندنەوەی داواکاری
