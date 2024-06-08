@@ -15,7 +15,6 @@ const CartPage = () => {
   const { getUserCart, cart, deleteProductFromCart } = useProducts();
   const [orderNote, setOrderNote] = useState("");
   const [showUserAddressModal, setShowUserAddressModal] = useState(false);
-  const isInCart = true;
 
   useEffect(() => {
     if (user) {
@@ -114,9 +113,10 @@ const CartPage = () => {
               )}
             </>
           ) : (
-            <div className="flex flex-col justify-center items-center gap-2">
-              <p className="text-xl">{FormatMoney(row.product.productPrice)}</p>
-              <p>{FormatMoney(row.product.productPrice)} IQD</p>
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-xl">
+                {FormatMoney(row.product.productPrice)} IQD
+              </p>
             </div>
           )}
         </div>

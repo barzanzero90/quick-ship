@@ -21,11 +21,6 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateEmail,
-  sendEmailVerification,
-  reauthenticateWithCredential,
-  onAuthStateChanged,
-  EmailAuthProvider,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -43,15 +38,14 @@ function authReducer(state, action) {
     case AUTHACTIONS.SET_LOADING:
       return {
         ...state,
+        loading: action.payload,
       };
-
     case AUTHACTIONS.SET_USER:
       return {
         ...state,
         loading: false,
         user: action.payload,
       };
-
     case AUTHACTIONS.SET_LOGIN:
     case AUTHACTIONS.SET_SIGN_UP:
       return {
@@ -59,17 +53,14 @@ function authReducer(state, action) {
         loading: false,
         user: action.payload,
       };
-
     case AUTHACTIONS.SET_USERS:
       return {
         ...state,
         loading: false,
         users: action.payload,
       };
-
     case AUTHACTIONS.SET_LOGOUT:
       return { ...state, loading: false, payload: action.payload };
-
     default:
       return state;
   }
@@ -126,6 +117,8 @@ export function AuthProvider({ children }) {
 
   const signUpUser = async (userData) => {
     try {
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: true });
+
       const userDoc = doc(db, "users", userData.email);
       const userSnapshot = await getDoc(userDoc);
 
@@ -137,18 +130,26 @@ export function AuthProvider({ children }) {
         );
 
         await setDoc(userDoc, userData);
-        navigate("/");
+
+        dispatch({ type: AUTHACTIONS.SET_USER, payload: userData });
+
+        setTimeout(() => {
+          dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
+        }, 2000);
       } else {
         alert("ئەم بەکارهێنەرە پێشتر هەبووە");
+        dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
       }
     } catch (error) {
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
-      console.error(error.message);
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
     }
   };
 
   const loginUser = async (userData) => {
     try {
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: true });
+
       const userDoc = doc(db, "users", userData.email);
       const userSnapshot = await getDoc(userDoc);
 
@@ -162,13 +163,26 @@ export function AuthProvider({ children }) {
         await updateDoc(userDoc, {
           lastLogin: new Date(),
         });
-        navigate("/");
+
+        dispatch({ type: AUTHACTIONS.SET_USER, payload: userData });
+
+        setTimeout(() => {
+          dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
+        }, 2000);
       } else {
         alert("ئەم بەکارهێنەرە بوونی نییە");
+        dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
       }
     } catch (error) {
+      if (error.code === "auth/wrong-password") {
+        alert("وشەی نهێنی هەڵەیە");
+      } else if (error.code === "auth/invalid-credential") {
+        alert("ئیمەیڵ یان وشەی نهێنی هەڵەیە");
+      } else {
+        alert("هەڵەیەک ڕووی دا");
+      }
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
-      console.error(error.message);
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
     }
   };
 
@@ -191,6 +205,8 @@ export function AuthProvider({ children }) {
 
   const createUserProfileWithSocialMediaIfNotExists = async (user) => {
     try {
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: true });
+
       const userDoc = doc(db, "users", user.email);
       const userSnapshot = await getDoc(userDoc);
 
@@ -213,6 +229,7 @@ export function AuthProvider({ children }) {
         });
       }
     } catch (error) {
+      dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
       console.error(error.message);
     }
@@ -340,6 +357,7 @@ export function AuthProvider({ children }) {
     deleteUser,
     logOutUser,
   };
+
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
