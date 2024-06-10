@@ -76,7 +76,9 @@ const CartPage = () => {
       selector: (row) => row.newTotalPrice,
       format: (row) => FormatMoney(row.newTotalPrice),
       cell: (row) => (
-        <strong className="text-lg">{FormatMoney(row.newTotalPrice)} IQD</strong>
+        <strong className="text-lg">
+          {FormatMoney(row.newTotalPrice)} IQD
+        </strong>
       ),
     },
     {
@@ -204,7 +206,7 @@ const CartPage = () => {
         : cartItem.product.productPrice *
           (1 - cartItem.product.productDiscount / 100)
       : cartItem.product.productPrice,
-      newTotalPrice: cartItem.totalPrice,
+    newTotalPrice: cartItem.totalPrice,
     selectedProductAttributes: cartItem.selectedProductAttributes.map(
       (selectedProductAttribute) => selectedProductAttribute.label
     ),
@@ -387,7 +389,14 @@ const CartPage = () => {
                               decreaseQuantity(
                                 cartItem.id,
                                 cartItem.quantity,
-                                cartItem.totalPrice
+                                cartItem.product.productDiscount
+                                  ? cartItem.product.discountType == "Flat"
+                                    ? cartItem.product.productPrice -
+                                      cartItem.product.productDiscount
+                                    : cartItem.product.productPrice *
+                                      (1 -
+                                        cartItem.product.productDiscount / 100)
+                                  : cartItem.product.productPrice
                               )
                             }
                             className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
@@ -403,7 +412,13 @@ const CartPage = () => {
                             increaseQuantity(
                               cartItem.id,
                               cartItem.quantity,
-                              cartItem.totalPrice
+                              cartItem.product.productDiscount
+                                ? cartItem.product.discountType == "Flat"
+                                  ? cartItem.product.productPrice -
+                                    cartItem.product.productDiscount
+                                  : cartItem.product.productPrice *
+                                    (1 - cartItem.product.productDiscount / 100)
+                                : cartItem.product.productPrice
                             )
                           }
                           className="bg-[#FF6F00] text-white rounded-full p-1 hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
