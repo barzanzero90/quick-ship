@@ -82,8 +82,8 @@ export function OrdersProvider({ children }) {
       // Update user money and user money spent
       const userDoc = doc(db, "users", user.email);
       await updateDoc(userDoc, {
-        userMoney: user?.userMoney - totalMoney,
-        userMoneySpent: user?.userMoneySpent + totalMoney,
+        userMoney: user?.userMoney - totalMoney - orderData.address.city.deliveryPrice,
+        userMoneySpent: user?.userMoneySpent + totalMoney - orderData.address.city.deliveryPrice,
       });
 
       if (isFromCart) {
