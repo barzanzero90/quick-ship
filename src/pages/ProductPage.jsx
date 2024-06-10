@@ -419,7 +419,7 @@ const ProductPage = () => {
                           />
 
                           <div className="flex flex-col justify-start items-center gap-2">
-                            <div className="flex flex-row-reverse justify-center items-center gap-4 border border-blue-600">
+                            <div className="flex flex-row-reverse justify-center items-center gap-4">
                               <strong>{review.user.fullName}</strong>
                               <p className="text-[#969393]">
                                 {FormatDate(review.createdAt)}
