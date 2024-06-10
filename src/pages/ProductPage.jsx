@@ -110,8 +110,12 @@ const ProductPage = () => {
   // console.log(averageRating);
 
   const handleSelectedReview = (selectedReview) => {
-    setSelectedReview(selectedReview);
-    setShowReviewActionsModal(true);
+    if (showReviewActionsModal == true) {
+      setShowReviewActionsModal(false);
+    } else {
+      setSelectedReview(selectedReview);
+      setShowReviewActionsModal(true);
+    }
   };
 
   return (
@@ -415,7 +419,7 @@ const ProductPage = () => {
                           />
 
                           <div className="flex flex-col justify-start items-center gap-2">
-                            <div className="flex flex-row-reverse justify-center items-center gap-4">
+                            <div className="flex flex-row-reverse justify-center items-center gap-4 border border-blue-600">
                               <strong>{review.user.fullName}</strong>
                               <p className="text-[#969393]">
                                 {FormatDate(review.createdAt)}

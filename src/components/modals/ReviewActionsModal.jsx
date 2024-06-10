@@ -25,13 +25,13 @@ const ReviewActionsModal = ({ setShowReviewActionsModal, selectedReview }) => {
 
   return (
     <div
-      className="absolute top-10 right-1 bg-white mainShadow p-2 rounded-md flex flex-col justify-end items-end gap-5 w-[225px]"
+      className="absolute top-10 left-0 bg-white mainShadow p-2 rounded-md flex flex-col justify-end items-end gap-2.5 w-[215px]"
       style={{ zIndex: 999 }}
       ref={menuRef}
     >
       <button
         onClick={() => setShowEditReviewModal(!showEditReviewModal)}
-        className="flex flex-row-reverse justify-start items-center gap-2 transform transition-all ease-in-out duration-200 hover:bg-[#969393]/15 active:scale-95 p-1 w-full rounded-md"
+        className="flex flex-row-reverse justify-start items-center gap-2 transform transition-all ease-in-out duration-200 hover:bg-[#969393]/15 active:scale-95 p-1 w-full rounded-md border-b border-b-[#e4e4e5]"
       >
         <BiEdit size={25} />
         <p>دەستکاری کردنی بۆچوون</p>

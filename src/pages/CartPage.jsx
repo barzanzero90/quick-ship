@@ -32,9 +32,9 @@ const CartPage = () => {
 
   let decreaseQuantity = async (cartId, quantity, unitPrice) => {
     if (quantity > 1) {
-      const productDoc = doc(db, `users/${user.email}/cart`, cartId);
       const newQuantity = quantity - 1;
       const newTotalPrice = newQuantity * unitPrice;
+      const productDoc = doc(db, `users/${user.email}/cart`, cartId);
       await updateDoc(productDoc, {
         quantity: newQuantity,
         totalPrice: newTotalPrice,
@@ -45,9 +45,9 @@ const CartPage = () => {
 
   let increaseQuantity = async (cartId, quantity, unitPrice) => {
     if (quantity) {
-      const productDoc = doc(db, `users/${user.email}/cart`, cartId);
       const newQuantity = quantity + 1;
       const newTotalPrice = newQuantity * unitPrice;
+      const productDoc = doc(db, `users/${user.email}/cart`, cartId);
       await updateDoc(productDoc, {
         quantity: newQuantity,
         totalPrice: newTotalPrice,
@@ -73,10 +73,10 @@ const CartPage = () => {
     },
     {
       name: "کۆی گشتی",
-      selector: (row) => row.totalPrice,
-      format: (row) => FormatMoney(row.totalPrice),
+      selector: (row) => row.newTotalPrice,
+      format: (row) => FormatMoney(row.newTotalPrice),
       cell: (row) => (
-        <strong className="text-lg">{FormatMoney(row.totalPrice)} IQD</strong>
+        <strong className="text-lg">{FormatMoney(row.newTotalPrice)} IQD</strong>
       ),
     },
     {
@@ -198,7 +198,13 @@ const CartPage = () => {
     productName: cartItem.product.productName,
     quantity: cartItem.quantity,
     productPrice: cartItem.product.productPrice, // This is the unit price
-    totalPrice: cartItem.totalPrice,
+    totalPrice: cartItem.product.productDiscount
+      ? cartItem.product.discountType == "Flat"
+        ? cartItem.product.productPrice - cartItem.product.productDiscount
+        : cartItem.product.productPrice *
+          (1 - cartItem.product.productDiscount / 100)
+      : cartItem.product.productPrice,
+      newTotalPrice: cartItem.totalPrice,
     selectedProductAttributes: cartItem.selectedProductAttributes.map(
       (selectedProductAttribute) => selectedProductAttribute.label
     ),
