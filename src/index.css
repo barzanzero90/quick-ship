@@ -15,8 +15,31 @@
   src: url("assets/fonts/NRT-Reg.ttf");
 }
 
-html, body {
+html,
+body {
   font-family: nrt-reg-font;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  height: 100vh;
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+}
+
+.footer {
+  grid-area: footer;
 }
 
 .mainShadow {

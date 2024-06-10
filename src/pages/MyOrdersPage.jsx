@@ -20,7 +20,7 @@ const getStatus = (status) => {
 };
 
 const MyOrdersPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const { orders, cancelOrder } = useOrders();
   const [showAddReviewModal, setShowAddReviewModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -28,10 +28,10 @@ const MyOrdersPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   const handleAddReview = (selectedOrder) => {
     setSelectedOrder(selectedOrder);
@@ -168,7 +168,7 @@ const MyOrdersPage = () => {
   return (
     <>
       {user ? (
-        <div className="pt-[30px]">
+        <main className="pt-[30px]">
           <Helmet>
             <title>گەیاندنی خێرا | داواکاریەکانم</title>
           </Helmet>
@@ -291,7 +291,7 @@ const MyOrdersPage = () => {
               selectedOrder={selectedOrder}
             />
           )}
-        </div>
+        </main>
       ) : (
         <div
           className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"

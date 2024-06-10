@@ -8,16 +8,16 @@ import AddToCartModal from "../components/modals/AddToCartModal";
 import { Helmet } from "react-helmet";
 
 const MyWishListsPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const { toggleWishList, getUserWishLists, wishLists } = useProducts();
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -26,7 +26,7 @@ const MyWishListsPage = () => {
   }, [user]);
 
   return (
-    <div className="pt-[30px]">
+    <main className="pt-[30px]">
       {user ? (
         <div className="flex flex-col justify-center items-center bg-white mainShadow w-[95%] mx-auto rounded-md">
           <Helmet>
@@ -112,7 +112,7 @@ const MyWishListsPage = () => {
           <p>...چاوەڕێ بە</p>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

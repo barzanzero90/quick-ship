@@ -120,8 +120,7 @@ const Hero = ({ product }) => {
               </>
             ) : (
               <div className="flex flex-col justify-center items-center gap-2">
-                <p className="text-xl">{FormatMoney(product.productPrice)}</p>
-                <p>{FormatMoney(product.productPrice)} IQD</p>
+                <p className="text-xl">{FormatMoney(product.productPrice)} IQD</p>
               </div>
             )}
           </div>
@@ -146,7 +145,7 @@ const Hero = ({ product }) => {
                   ? setShowAddToCartModal(!showAddToCartModal)
                   : alert("تکایە سەرەتا بچۆ ژوورەوە")
               }
-              className="bg-[#FF6F00] text-white p-2 rounded-md hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+              className="bg-[#FF6F00] py-2 px-3 text-white rounded-md active:scale-95 transform transition-all ease-in-out duration-100 hover:bg-[#e47017]"
             >
               زیادبکە بۆ سەبەتەی کڕین
             </button>

@@ -90,7 +90,7 @@ const CustomerPage = () => {
                       <button
                         onClick={() => {
                           deleteUser(customer.email);
-                          return (window.location.href = "/admin/customers");
+                          // return (window.location.href = "/admin/customers");
                         }}
                         className="bg-red-700 text-white transform transition-all ease-in-out duration-100 hover:bg-red-800 rounded-md p-2 active:scale-95"
                       >

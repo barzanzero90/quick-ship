@@ -7,17 +7,17 @@ import { FaFacebookF } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 
 const LoginPage = () => {
-  const { user, loginUser, dispatch, googleSignIn, facebookSignIn, loading } =
+  const { user, userExistsInLocalStorage, loginUser, dispatch, googleSignIn, facebookSignIn, loading } =
     useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user && !loading) {
+    if (userExistsInLocalStorage || user && !loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, user, loading, navigate]);
 
   const handleLoginUser = async () => {
     if (email.trim() === "") {
@@ -42,10 +42,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <main className="flex justify-center items-center h-screen">
       {loading ? (
         <div
-          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          className="absolute top-0 left-0 w-full h-screen flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
           style={{ zIndex: 999 }}
         >
           <div className="loader"></div>
@@ -125,7 +125,7 @@ const LoginPage = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

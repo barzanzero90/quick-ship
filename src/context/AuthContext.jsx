@@ -29,6 +29,7 @@ const AuthContext = createContext();
 const authInitialState = {
   loading: true,
   user: null,
+  userExistsInLocalStorage: JSON.parse(localStorage.getItem("uid")) || null,
   error: null,
   users: [],
 };
@@ -45,6 +46,12 @@ function authReducer(state, action) {
         ...state,
         loading: false,
         user: action.payload,
+      };
+    case AUTHACTIONS.SET_USER_IN_LOCAL_STORAGE:
+      return {
+        ...state,
+        loading: false,
+        userExistsInLocalStorage: action.payload,
       };
     case AUTHACTIONS.SET_LOGIN:
     case AUTHACTIONS.SET_SIGN_UP:
@@ -74,21 +81,28 @@ export function AuthProvider({ children }) {
     try {
       auth.onAuthStateChanged(async (currentUser) => {
         if (currentUser) {
-          const userDoc = doc(db, "users", currentUser.email);
-          const userSnapshot = await getDoc(userDoc);
+          localStorage.setItem("uid", JSON.stringify(currentUser.uid));
 
-          if (userSnapshot.exists()) {
-            currentUser = userSnapshot.data();
-            dispatch({ type: AUTHACTIONS.SET_USER, payload: currentUser });
-          } else {
-            dispatch({ type: AUTHACTIONS.SET_USER, payload: null });
-          }
+          const userDoc = doc(db, "users", currentUser.email);
+
+          onSnapshot(userDoc, (snapshot) => {
+            const user = snapshot.data();
+            dispatch({ type: AUTHACTIONS.SET_USER, payload: user });
+          });
         }
       });
     } catch (error) {
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
       console.error(error.message);
     }
+  };
+
+  const getUserInLocalStorage = () => {
+    const userExistsInLocalStorage = JSON.parse(localStorage.getItem("uid"));
+    dispatch({
+      type: AUTHACTIONS.SET_USER_IN_LOCAL_STORAGE,
+      payload: userExistsInLocalStorage,
+    });
   };
 
   const getUsers = async () => {
@@ -112,6 +126,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     getUserOnLoad();
+    getUserInLocalStorage();
     getUsers();
   }, []);
 
@@ -130,6 +145,8 @@ export function AuthProvider({ children }) {
         );
 
         await setDoc(userDoc, userData);
+
+        getUserInLocalStorage();
 
         dispatch({ type: AUTHACTIONS.SET_USER, payload: userData });
 
@@ -164,7 +181,7 @@ export function AuthProvider({ children }) {
           lastLogin: new Date(),
         });
 
-        dispatch({ type: AUTHACTIONS.SET_USER, payload: userData });
+        getUserInLocalStorage();
 
         setTimeout(() => {
           dispatch({ type: AUTHACTIONS.SET_LOADING, payload: false });
@@ -222,6 +239,7 @@ export function AuthProvider({ children }) {
           createdAt: new Date(),
           lastLogin: new Date(),
         });
+        getUserInLocalStorage();
         navigate("/");
       } else {
         await updateDoc(userDoc, {
@@ -334,6 +352,10 @@ export function AuthProvider({ children }) {
     try {
       await signOut(auth);
       dispatch({ type: AUTHACTIONS.SET_LOGOUT, payload: null });
+      dispatch({
+        type: AUTHACTIONS.SET_USER_IN_LOCAL_STORAGE,
+        payload: localStorage.removeItem("uid"),
+      });
       return (window.location.href = "/");
     } catch (error) {
       dispatch({ type: AUTHACTIONS.SET_ERROR, payload: error.message });
@@ -346,6 +368,7 @@ export function AuthProvider({ children }) {
     dispatch,
     loading: state.loading,
     user: state.user,
+    userExistsInLocalStorage: state.userExistsInLocalStorage,
     error: state.error,
     users: state.users,
     signUpUser,

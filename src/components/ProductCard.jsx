@@ -35,6 +35,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/product/${product.id}`}>
         <img
           src={product.productThumbnailImageURL}
+          loading="lazy"
           className="w-full h-full rounded-md object-cover"
           alt=""
         />

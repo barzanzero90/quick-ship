@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 
 const AddressPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const { getUserAddress, address, countries, getCountries, deleteAddress } =
     useLocations();
@@ -18,10 +18,10 @@ const AddressPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!user && loading){
+    if(!userExistsInLocalStorage && loading){
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -36,7 +36,7 @@ const AddressPage = () => {
   return (
     <>
       {user ? (
-        <div className="pt-[30px]">
+        <main className="pt-[30px]">
           <Helmet>
             <title>گەیاندنی خێرا | ناونیشانەکانم</title>
           </Helmet>
@@ -126,7 +126,7 @@ const AddressPage = () => {
               ))}
             </div>
           </div>
-        </div>
+        </main>
       ) : (
         <div
           className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"

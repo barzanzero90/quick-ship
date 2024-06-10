@@ -8,7 +8,6 @@ import { useCategories } from "../context/CategoriesContext";
 import { Helmet } from "react-helmet";
 
 const HomePage = () => {
-  const { user, logOutUser } = useAuth();
   const { products } = useProducts();
   const { categories } = useCategories();
 
@@ -21,7 +20,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-12 w-full pb-3">
+    <main className="flex flex-col gap-12 w-full pb-3">
       <Helmet>
         <title>گەیاندنی خێرا</title>
       </Helmet>
@@ -46,7 +45,7 @@ const HomePage = () => {
         }
         return null;
       })}
-    </div>
+    </main>
   );
 };
 

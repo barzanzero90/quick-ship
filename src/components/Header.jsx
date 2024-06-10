@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  useTransition,
 } from "react";
 import Logo from "../assets/img/logo.png";
 import { IoIosArrowDown } from "react-icons/io";
@@ -18,7 +19,7 @@ import { CgClose } from "react-icons/cg";
 import Search from "./Search";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, userExistsInLocalStorage } = useAuth();
   const { products, getUserWishLists, wishLists, getUserCart, cart } =
     useProducts();
   const [showCategories, setShowCategories] = useState(false);
@@ -27,6 +28,7 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isPending, startTransition] = useTransition();
 
   if (location.pathname.includes("/admin")) return null;
 
@@ -34,10 +36,12 @@ const Header = () => {
     try {
       if (search.length > 0) {
         setShowSearch(true);
-        const filteredProducts = products.filter((product) =>
-          product.productName.toLowerCase().includes(search.toLowerCase())
-        );
-        setFilteredProducts(filteredProducts);
+        startTransition(() => {
+          const filteredProducts = products.filter((product) =>
+            product.productName.toLowerCase().includes(search.toLowerCase())
+          );
+          setFilteredProducts(filteredProducts);
+        });
       } else {
         setShowSearch(false);
         setFilteredProducts([]);
@@ -67,7 +71,7 @@ const Header = () => {
   }, [cart]);
 
   return (
-    <div
+    <header
       className="sticky top-0 left-0 w-full h-16 bg-[#F5E5D7]/95 backdrop-blur-sm flex flex-row-reverse justify-between items-center px-2 gap-3"
       style={{ zIndex: 999 }}
     >
@@ -97,6 +101,7 @@ const Header = () => {
               setShowSearch={setShowSearch}
               filteredProducts={filteredProducts}
               setOpenNav={setOpenNav}
+              isPending={isPending}
             />
           )}
         </div>
@@ -140,10 +145,15 @@ const Header = () => {
         </div>
 
         <div className="flex">
-          {user ? (
+          {userExistsInLocalStorage || user ? (
             <Link to="/profile">
               <img
-                src={user.userImageURL}
+                src={
+                  user
+                    ? user.userImageURL
+                    : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAmwMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAABAUGAQMCB//EAC8QAQACAQIEAwcDBQAAAAAAAAABAgMEEQUSITFBUXETIjJCUmGBFMHRJGKSsbL/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A/SQAAAAAAAAAAAAAAAAAAAAAAAAOvaI3AjunabhuTJtbJPJX06peg0MYojJliJyeHlVPBEx8O01Pkm0+dpe36fDHbFT/ABh6gI99Fpr98Nfx0Q8/Co23w32n6bfytAGayYr4r8uSsxL4aLU6emopy5I9J8YUWpwX0+Scdo6d4nzB5AAAAAAAAAALDhOni95zXjpWfd9Vf6tDo8fstNjrt123n1B7wAAAAAAja/TxqMExHx161SXJ7AzAka/H7PV5IjtM80flHAAAAAAAAB2sb2iPOWnZeJ2mJ8mnrO8RMeIOgAAAAAAApuMx/U0nzp+8oCdxe2+qiPprCCAAAAAAAAAveGZva6WsTO9qe7KiSNDqf0+befgnpaAaAcrMWrExO8T1h0AAAABy0xWJmekR1l1W8V1XLX2FJ963xT5QCt1GSc2a+TwtO8ejzAAAAAAAAAAH1ix3y3imOs2mfIErQ66dPMUvvOP/AJXWPJXLSL0nes9pQdJw2mPa2ba9vLwhPiIjsDoAAAK/XcQrj3x4euTtM/Sp5mZnee892g1OlxaiPfrtP1R3VGq0eTTTvMc1PC0eHqCMAAAAAAAAD20uC2oyxSOkfNbygHdLpb6m+1elY72ntC802DHp6cuOu3nPjLuHFTDjrTHG1YegAAAAAADloiYmJjeJ8HQFRr+H8m+XBHu+NPL0VzUKniej5N8+KOnzx+4K0AAAAACImZiIjeZnbZoNFp40+GK97d7T91XwrF7TVc3y0jf8+C8AAAAAAAAAAAcmN46ugM/rtP8Ap88xHwW61R13xXD7TTTaI96nX8eKkAAAABccHpy6eb7fFb/SweGiryaXFH9u73AAAAAAAAAAAAB83rFqzWe0xszV68l7V+mdmnZ/iFeTWZY++4I4ADkgDT44iMddvKH0AAAAAAAAAAAAACj4v01k/esACGAD/9k="
+                }
+                loading="lazy"
                 className="w-12 h-12 rounded-full object-cover"
                 alt=""
               />
@@ -229,7 +239,7 @@ const Header = () => {
           </div>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

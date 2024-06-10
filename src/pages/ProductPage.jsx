@@ -18,7 +18,7 @@ import { Helmet } from "react-helmet";
 
 const ProductPage = () => {
   const { productId } = useParams();
-  const { user } = useAuth();
+  const { user, userExistsInLocalStorage } = useAuth();
   const { products, getUserWishLists, wishLists, toggleWishList, addToCart } =
     useProducts();
   const [product, setProduct] = useState(null);
@@ -115,7 +115,7 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="pt-[30px] w-full">
+    <main className="pt-[30px] w-full">
       {product ? (
         <div className="flex flex-col gap-5">
           <Helmet>
@@ -320,11 +320,11 @@ const ProductPage = () => {
               <div className="flex flex-row-reverse flex-wrap justify-center items-center gap-3">
                 <button
                   onClick={() =>
-                    user
+                    userExistsInLocalStorage || user
                       ? toggleWishList(user, product)
                       : alert("تکایە سەرەتا بچۆ ژووەرەوە")
                   }
-                  className="bg-[#FF6F00] text-white p-2 rounded-md hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+                  className="bg-[#FF6F00] py-2 px-3 text-white rounded-md active:scale-95 transform transition-all ease-in-out duration-100 hover:bg-[#e47017]"
                 >
                   {isWishList
                     ? "بیسڕەوە لە لیستی دڵخوازەکان"
@@ -333,11 +333,11 @@ const ProductPage = () => {
 
                 <button
                   onClick={() =>
-                    user
+                    userExistsInLocalStorage
                       ? setShowAddToCartModal(!showAddToCartModal)
                       : alert("تکایە سەرەتا بچۆ ژوورەوە")
                   }
-                  className="bg-[#FF6F00] text-white p-2 rounded-md hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+                  className="bg-[#FF6F00] py-2 px-3 text-white rounded-md active:scale-95 transform transition-all ease-in-out duration-100 hover:bg-[#e47017]"
                 >
                   زیادبکە بۆ سەبەتەی کڕین
                 </button>
@@ -352,15 +352,15 @@ const ProductPage = () => {
 
                 <button
                   onClick={() =>
-                    user
-                      ? user.userMoney >= totalPrice
+                    userExistsInLocalStorage
+                      ? user?.userMoney >= totalPrice
                         ? setShowUserAddressModal(!showUserAddressModal)
                         : alert(
                             "ناتوانیت داوای ئەم بەرهەمە بکەیت، چونکە باڵانسی پێویستت نییە"
                           )
                       : alert("تکایە سەرەتا بچۆ ژوورەوە")
                   }
-                  className="bg-[#FF6F00] text-white p-2 rounded-md hover:bg-[#FF6F00]/90 active:scale-95 transform transition-all duration-100 ease-in-out"
+                  className="bg-[#FF6F00] py-2 px-3 text-white rounded-md active:scale-95 transform transition-all ease-in-out duration-100 hover:bg-[#e47017]"
                 >
                   داواکردن
                 </button>
@@ -638,7 +638,7 @@ const ProductPage = () => {
           <p>...چاوەڕێ بە</p>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

@@ -12,7 +12,7 @@ const Footer = () => {
   }
 
   return (
-    <div className="pt-10 w-full">
+    <div className="footer pt-10 w-full">
       <footer className="flex flex-col justify-center items-center gap-5 w-full bg-[#F5E5D7]">
         <div className="w-full flex flex-col justify-center items-center gap-5 sm:flex-row-reverse sm:justify-around sm:items-start p-4">
           <div className="flex flex-col justify-center items-center gap-7">

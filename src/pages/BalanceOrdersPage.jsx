@@ -8,20 +8,20 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 
 const BalanceOrdersPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const { orders, deleteOrder } = useOrders();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   return (
     <>
       {user ? (
-        <div className="pt-[30px]">
+        <main className="pt-[30px]">
           <Helmet>
             <title>گەیاندنی خێرا | داواکاریەکانی زیادکردنی باڵانس</title>
           </Helmet>
@@ -85,7 +85,7 @@ const BalanceOrdersPage = () => {
               )}
             </div>
           </div>
-        </div>
+        </main>
       ) : (
         <>Loading...</>
       )}

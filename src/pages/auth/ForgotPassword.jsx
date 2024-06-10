@@ -5,15 +5,15 @@ import { AUTHACTIONS } from "../../actions/authActions";
 import { Helmet } from "react-helmet";
 
 const ForgotPassword = () => {
-  const { user, forgotPassword, dispatch, loading } = useAuth();
+  const { user, userExistsInLocalStorage, forgotPassword, dispatch, loading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if (user && !loading) {
+    if (userExistsInLocalStorage || user && !loading) {
       return navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, user, loading, navigate]);
 
   const handleForgotPassword = async () => {
     try {
@@ -29,10 +29,10 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <main className="flex justify-center items-center h-screen">
       {loading ? (
         <div
-          className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          className="absolute top-0 left-0 w-full h-screen flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
           style={{ zIndex: 999 }}
         >
           <div className="loader"></div>
@@ -81,7 +81,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

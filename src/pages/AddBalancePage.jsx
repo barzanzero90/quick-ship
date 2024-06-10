@@ -5,12 +5,12 @@ import PaymentMethodModal from "../components/modals/PaymentMethodModal";
 import { Helmet } from "react-helmet";
 
 const AddBalancePage = () => {
-  const { user } = useAuth();
+  const { user, userExistsInLocalStorage } = useAuth();
   const [isSelectedPaymentMethod, setIsSelectedPaymentMethod] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("FastPay");
 
   return (
-    <div className="pt-[30px]">
+    <main className="pt-[30px]">
       <Helmet>
         <title>گەیاندنی خێرا | زیادکردنی باڵانس</title>
       </Helmet>
@@ -31,7 +31,7 @@ const AddBalancePage = () => {
             >
               <button
                 onClick={() => {
-                  user
+                  userExistsInLocalStorage || user
                     ? [
                         setIsSelectedPaymentMethod(!isSelectedPaymentMethod),
                         setPaymentMethod(paymentMethod),
@@ -60,7 +60,7 @@ const AddBalancePage = () => {
           user={user}
         />
       )}
-    </div>
+    </main>
   );
 };
 

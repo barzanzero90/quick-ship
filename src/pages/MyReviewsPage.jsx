@@ -11,17 +11,17 @@ import EditReviewModal from "../components/modals/EditReviewModal";
 import { Helmet } from "react-helmet";
 
 const MyReviewsPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const { reviews, deleteReview } = useReviews();
   const [showEditReviewModal, setShowEditReviewModal] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   const handleSelectedReview = (selectedReview) => {
     setSelectedReview(selectedReview);
@@ -31,7 +31,7 @@ const MyReviewsPage = () => {
   return (
     <>
       {user ? (
-        <div className="pt-[30px]">
+        <main className="pt-[30px]">
           <Helmet>
             <title>گەیاندنی خێرا | بۆچوونەکانم</title>
           </Helmet>
@@ -135,7 +135,7 @@ const MyReviewsPage = () => {
               )}
             </div>
           </div>
-        </div>
+        </main>
       ) : (
         <div
           className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"

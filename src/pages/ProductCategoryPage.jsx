@@ -47,7 +47,7 @@ const ProductCategoryPage = () => {
   return (
     <>
       {category ? (
-        <div className="grid grid-cols-3 gap-5 p-3 w-full">
+        <main className="grid grid-cols-3 gap-5 p-3 w-full">
           <Helmet>
             <title>{category.categoryName} گەیاندنی خێرا | بەرهەمەکانی</title>
           </Helmet>
@@ -95,7 +95,7 @@ const ProductCategoryPage = () => {
               ))}
             </div>
           </div>
-        </div>
+        </main>
       ) : (
         <>ئەم بەشە بوونی نییە</>
       )}

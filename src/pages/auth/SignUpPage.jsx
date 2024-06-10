@@ -9,7 +9,7 @@ import { storage } from "../../firebase/firebaseConfig";
 import { Helmet } from "react-helmet";
 
 const SignUpPage = () => {
-  const { user, signUpUser, dispatch, googleSignIn, facebookSignIn, loading } =
+  const { user, userExistsInLocalStorage, signUpUser, dispatch, googleSignIn, facebookSignIn, loading } =
     useAuth();
   const navigate = useNavigate();
   const [userImage, setUserImage] = useState(null);
@@ -19,10 +19,10 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user && !loading) {
+    if (userExistsInLocalStorage || user && !loading) {
       return navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, user, loading, navigate]);
 
   const handleUploadUserImage = async () => {
     try {
@@ -75,11 +75,11 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="py-[30px]">
+    <main className="py-[30px]">
       <div className="flex justify-center items-center h-screen">
         {loading ? (
           <div
-            className="absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+            className="absolute top-0 left-0 w-full h-screen flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
             style={{ zIndex: 999 }}
           >
             <div className="loader"></div>
@@ -179,7 +179,7 @@ const SignUpPage = () => {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

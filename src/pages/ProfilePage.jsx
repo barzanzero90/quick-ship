@@ -13,18 +13,18 @@ import { GrUserAdmin } from "react-icons/gr";
 import { Helmet } from "react-helmet";
 
 const ProfilePage = () => {
-  const { user, logOutUser, loading } = useAuth();
+  const { user, userExistsInLocalStorage, logOutUser, loading } = useAuth();
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   return (
-    <div className="pt-5">
+    <main className="pt-5">
       {user ? (
         <div className="flex flex-col justify-center items-center gap-5 p-2">
           <Helmet>
@@ -156,7 +156,7 @@ const ProfilePage = () => {
           <p>...چاوەڕێ بە</p>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

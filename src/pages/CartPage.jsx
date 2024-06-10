@@ -12,17 +12,17 @@ import UserAddressModal from "../components/modals/UserAddressModal";
 import { Helmet } from "react-helmet";
 
 const CartPage = () => {
-  const { user, loading } = useAuth();
+  const { user, userExistsInLocalStorage, loading } = useAuth();
   const { getUserCart, cart, deleteProductFromCart } = useProducts();
   const [orderNote, setOrderNote] = useState("");
   const [showUserAddressModal, setShowUserAddressModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && loading) {
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [userExistsInLocalStorage, loading, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -237,7 +237,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="pt-[30px]">
+    <main className="pt-[30px]">
       {user ? (
         <div className="w-[95%] p-2 flex flex-col text-right gap-4 mainShadow rounded-md mx-auto">
           <Helmet>
@@ -464,7 +464,7 @@ const CartPage = () => {
           <p>...چاوەڕێ بە</p>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
