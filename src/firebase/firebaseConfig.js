@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAyodnW2NjJ7wBMtmNOqy62U6ZfB_cfURs",
-    authDomain: "barzan-drop-shipping.firebaseapp.com",
-    projectId: "barzan-drop-shipping",
-    storageBucket: "barzan-drop-shipping.appspot.com",
-    messagingSenderId: "549744078272",
-    appId: "1:549744078272:web:8c427873a4d2ec4cd8ac25",
-    measurementId: "G-KDN5EW9MNK"
+    apiKey: "AIzaSyAjtZ3QqYvM74jmEcQSGxr745BX4KBibGE",
+    authDomain: "quic-shipping.firebaseapp.com",
+    projectId: "quic-shipping",
+    storageBucket: "quic-shipping.appspot.com",
+    messagingSenderId: "543136669497",
+    appId: "1:543136669497:web:6f488db35cd9477f6212e8",
+    measurementId: "G-PYN4Q9C0SW"
 };
 
 // Initialize Firebase
