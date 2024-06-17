@@ -126,7 +126,7 @@ const ProductPage = () => {
             <title>{product.productName} | گەیاندنی خێرا</title>
           </Helmet>
 
-          <div className="product flex flex-row-reverse flex-wrap justify-between items-start w-full p-3">
+          <div className="product flex flex-wrap justify-between items-start w-full p-3">
             <div className="flex justify-start items-start gap-2">
               <Suspense fallback={<>Loading...</>}>
                 <div className="product-images flex flex-row-reverse justify-start items-start gap-2">
@@ -157,7 +157,7 @@ const ProductPage = () => {
               </Suspense>
             </div>
 
-            <div className="product-info flex flex-col justify-start items-start gap-4">
+            <div className="product-info flex flex-col text-right justify-end items-end gap-4">
               <h1 className="text-2xl font-bold">{product.productName}</h1>
               <p className="max-w-[500px]">
                 وەسف : {product.productDescription}

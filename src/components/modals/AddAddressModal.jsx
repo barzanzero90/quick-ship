@@ -4,6 +4,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import Select from "react-select";
 import { useLocations } from "../../context/LocationsContext";
 import { LOCATION_ACTIONS } from "../../actions/locationActions";
+import { useAuth } from "../../context/AuthContext";
 
 const AddAddressModal = ({
   showAddAddressModal,
@@ -13,11 +14,12 @@ const AddAddressModal = ({
 }) => {
   hideScrollBar(showAddAddressModal);
 
+  const { user } = useAuth();
   const { getCities, cities, addAddress, dispatch } = useLocations();
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
   const [address, setAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber);
 
   const handleCountryChange = (selectedOption) => {
     const selectedCountryId = selectedOption.value;

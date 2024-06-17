@@ -11,7 +11,7 @@ import { PRODUCTSACTIONS } from "../../actions/productsActions";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/firebaseConfig";
 
-const attributes = [
+/* const attributes = [
   { value: "size", label: "Size" },
   { value: "number", label: "Number" },
   { value: "ageMonths", label: "Age Months" },
@@ -36,14 +36,14 @@ const subAttributes = {
     { value: "2 years", label: "2 years" },
     { value: "6 years", label: "6 years" },
   ],
-};
+}; */
 
 const AddProduct = () => {
   const { user } = useAuth();
   const { addProduct, dispatch } = useProducts();
   const { categories, getSubCategories, subCategories } = useCategories();
   const { brands } = useBrands();
-  const { colors } = useProperties();
+  const { colors, attributes } = useProperties();
   const productId = useId();
   const [productName, setProductName] = useState("");
   const [productCategory, setProductCategory] = useState(null);
@@ -55,9 +55,6 @@ const AddProduct = () => {
   const [productThumbnailImage, setProductThumbnailImage] = useState(null);
   const [productImages, setProductImages] = useState([]);
   const [productPrice, setProductPrice] = useState("");
-  const [isFreeShipping, setIsFreeShipping] = useState(true);
-  const [isFlatRate, setIsFlatRate] = useState(false);
-  const [shippingCost, setShippingCost] = useState("");
   const [shippingDays, setShippingDays] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productDiscount, setProductDiscount] = useState("");
@@ -143,34 +140,31 @@ const AddProduct = () => {
     setProductSubAttributes(newSubAttributesOptions);
   }; */
 
-  const handleAttributesInputChange = (selected) => {
-    // Set selected attributes
+  const handleAttributesInputChange = async (selected) => {
     setProductAttributes(selected);
 
-    // Extract sub-attributes for each selected attribute
-    const subAttributesData = selected.map((attr) => ({
-      attributeName: attr.label,
-      subAttributes: subAttributes[attr.value] || [],
-    }));
+    // Fetch sub-attributes for selected attributes
+    const subAttributesData = selected.map((attr) => {
+      const subAttrs = attributes.find(
+        (attribute) => attribute.id === attr.value
+      ).subAttributes;
+      return { attributeName: attr.label, subAttributes: subAttrs || [] };
+    });
 
-    // Set sub-attributes
     setProductSubAttributes(subAttributesData);
   };
 
   const handleSubAttributesInputChange = (selected, attributeName) => {
-    // Find the index of the attribute
-    const attributeIndex = productAttributes.findIndex(
-      (attr) => attr.value === attributeName
-    );
-
-    // Update sub-attributes for the corresponding attribute
-    if (attributeIndex !== -1) {
-      const updatedSubAttributes = [...productSubAttributes];
-      updatedSubAttributes[attributeIndex].subAttributes = selected.map(
-        (subAttr) => subAttr.label
-      );
-      setProductSubAttributes(updatedSubAttributes);
-    }
+    const updatedSubAttributes = productSubAttributes.map((attr) => {
+      if (attr.attributeName === attributeName) {
+        return {
+          ...attr,
+          subAttributes: selected.map((subAttr) => subAttr.label),
+        };
+      }
+      return attr;
+    });
+    setProductSubAttributes(updatedSubAttributes);
   };
 
   /* 
@@ -183,16 +177,6 @@ const AddProduct = () => {
     const resolvedSubAttributes = await Promise.all(subAttributesPromises);
     setProductSubAttributes(resolvedSubAttributes);
   }; */
-
-  const handleFreeShippingChange = () => {
-    setIsFreeShipping(true);
-    setIsFlatRate(false);
-  };
-
-  const handleFlatRateChange = () => {
-    setIsFlatRate(true);
-    setIsFreeShipping(false);
-  };
 
   const handleAddProduct = async () => {
     try {
@@ -229,9 +213,6 @@ const AddProduct = () => {
           productDiscount,
           productDiscountType,
           productDescription,
-          isFreeShipping,
-          isFlatRate,
-          shippingCost,
           shippingDays,
           productProfit,
           createdAt: new Date(),
@@ -446,8 +427,8 @@ const AddProduct = () => {
                         <Select
                           isMulti
                           options={attributes.map((attribute) => ({
-                            value: attribute.value,
-                            label: attribute.label,
+                            value: attribute.id,
+                            label: attribute.attributeName,
                           }))}
                           onChange={handleAttributesInputChange}
                           placeholder="Select Attributes"
@@ -466,12 +447,15 @@ const AddProduct = () => {
                           <Select
                             isMulti
                             options={attribute.subAttributes.map((subAttr) => ({
-                              value: subAttr.value,
-                              label: subAttr.label,
+                              value: subAttr,
+                              label: subAttr,
                             }))}
                             placeholder={`Select ${attribute.attributeName}`}
                             onChange={(selected) =>
-                              handleSubAttributesInputChange(selected, index)
+                              handleSubAttributesInputChange(
+                                selected,
+                                attribute.attributeName
+                              )
                             }
                           />
                         </div>
@@ -580,54 +564,6 @@ const AddProduct = () => {
 
                 <div className="w-full h-full flex flex-col justify-between items-center">
                   <div className="flex flex-col w-full gap-5">
-                    <div className="w-full mainShadow flex flex-col justify-start items-start gap-4 p-2 rounded-md">
-                      <h3 className="text-lg font-semibold w-full border-b border-b-[#969393]/25">
-                        Shipping Configuration
-                      </h3>
-
-                      <div className="flex flex-col gap-3 w-full">
-                        <div className="flex justify-between items-center px-2">
-                          <p className="font-semibold">Free Shipping</p>
-
-                          <input
-                            type="checkbox"
-                            checked={isFreeShipping}
-                            onChange={handleFreeShippingChange}
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2 justify-center items-center p-2 w-full">
-                          <div className="flex justify-between items-center w-full">
-                            <p className="font-semibold">Flat Rate</p>
-
-                            <input
-                              type="checkbox"
-                              checked={isFlatRate}
-                              onChange={handleFlatRateChange}
-                            />
-                          </div>
-
-                          {isFlatRate && (
-                            <div className="flex justify-between items-center w-full">
-                              <p className="font-semibold">Shipping Cost</p>
-
-                              <input
-                                type="number"
-                                min={1}
-                                placeholder="Shipping Cost"
-                                value={shippingCost}
-                                onChange={(e) =>
-                                  setShippingCost(parseInt(e.target.value))
-                                }
-                                required
-                                className="p-2 border border-[#e4e4e5] rounded-md"
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="w-full mainShadow flex flex-col justify-start items-start gap-4 p-2 rounded-md">
                       <h3 className="text-lg font-semibold w-full border-b border-b-[#969393]/25">
                         Estimate Shipping Time

@@ -5,11 +5,22 @@ import SideBar from "../../components/admin/SideBar";
 import AddColorModal from "../../components/admin/modals/AddColorModal";
 import { useProperties } from "../../context/PropertiesContext";
 import { RiDeleteBin4Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import AddAttributeModal from "../../components/admin/modals/AddAttributeModal";
+import AttributeModal from "../../components/admin/modals/AttributeModal";
 
 const PropertiesPage = () => {
   const { user } = useAuth();
-  const { colors, deleteColor } = useProperties();
+  const { colors, deleteColor, attributes } = useProperties();
   const [showAddColorModal, setShowAddColorModal] = useState(false);
+  const [showAddAttributeModal, setShowAddAttributeModal] = useState(false);
+  const [selectedAttribute, setSelectedAttribute] = useState(null);
+  const [showAttributeModal, setShowAttributeModal] = useState(false);
+
+  const handleSelectAttribute = (selectedAttribute) => {
+    setSelectedAttribute(selectedAttribute);
+    setShowAttributeModal(true);
+  };
 
   return (
     <>
@@ -35,6 +46,16 @@ const PropertiesPage = () => {
                         <IoIosAdd size={25} />
                         Add color
                       </button>
+
+                      <button
+                        onClick={() =>
+                          setShowAddAttributeModal(!showAddAttributeModal)
+                        }
+                        className="flex justify-center items-center gap-0.5 p-2 hover:bg-[#969393]/25 rounded-md transform transition-all ease-in-out duration-100 active:scale-95"
+                      >
+                        <IoIosAdd size={25} />
+                        Add attribute
+                      </button>
                     </div>
                   </header>
 
@@ -42,6 +63,13 @@ const PropertiesPage = () => {
                     <AddColorModal
                       showAddColorModal={showAddColorModal}
                       setShowAddColorModal={setShowAddColorModal}
+                    />
+                  )}
+
+                  {showAddAttributeModal && (
+                    <AddAttributeModal
+                      showAddAttributeModal={showAddAttributeModal}
+                      setShowAddAttributeModal={setShowAddAttributeModal}
                     />
                   )}
 
@@ -75,6 +103,32 @@ const PropertiesPage = () => {
                           </button>
                         </div>
                       ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-start items-start gap-3 w-full border-b border-b-[#969393]/25 py-2">
+                    <h2 className="text-xl font-semibold">
+                      Attributes ({attributes.length})
+                    </h2>
+
+                    <div className="flex flex-wrap justify-center items-center gap-5">
+                      {attributes.map((attribute, index) => (
+                        <button
+                          onClick={() => handleSelectAttribute(attribute)}
+                          key={index}
+                          className="relative flex justify-between items-center p-2 border border-[#969393]/25 rounded-md"
+                        >
+                          <p>{attribute.attributeName}</p>
+                        </button>
+                      ))}
+
+                      {showAttributeModal && (
+                        <AttributeModal
+                          showAttributeModal={showAttributeModal}
+                          setShowAttributeModal={setShowAttributeModal}
+                          attribute={selectedAttribute}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

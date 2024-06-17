@@ -56,10 +56,10 @@ const Hero = ({ product }) => {
           />
         </Link>
 
-        <div className="flex flex-col justify-end items-end gap-3">
+        <div className="flex flex-col justify-end items-end gap-3 px-2">
           <Link
             to={`/product/${product.id}`}
-            className="text-3xl font-semibold hover:underline hover:underline-offset-2"
+            className="text-3xl text-right text-wrap font-semibold hover:underline hover:underline-offset-2"
           >
             {product.productName}
           </Link>
@@ -70,13 +70,6 @@ const Hero = ({ product }) => {
           >
             {product.productDescription.slice(0, 300)}
           </Link>
-
-          {/* <Link
-            to={`/product/${product.id}`}
-            className="text-lg font-semibold text-right max-w-[400px] hover:underline hover:underline-offset-2"
-          >
-            {FormatMoney(product.productPrice)} IQD
-          </Link> */}
 
           <div className="flex justify-center items-center gap-1">
             {product.productDiscount ? (

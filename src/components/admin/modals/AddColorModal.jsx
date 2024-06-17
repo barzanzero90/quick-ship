@@ -58,10 +58,7 @@ const AddColorModal = ({ showAddColorModal, setShowAddColorModal }) => {
           </button>
         </div>
 
-        <form
-          onSubmit={handleAddColor}
-          className="flex flex-col justify-center items-center gap-3"
-        >
+        <form className="flex flex-col justify-center items-center gap-3">
           <input
             type="text"
             placeholder="Color Name"
@@ -78,7 +75,10 @@ const AddColorModal = ({ showAddColorModal, setShowAddColorModal }) => {
             className="w-[270px] p-2 border border-[#e4e4e5] rounded-md"
           />
 
-          <button className="w-[270px] p-2 bg-blue-700 text-white hover:bg-blue-800 rounded-md transform transition-all ease-in-out duration-100 active:scale-95">
+          <button
+            onClick={handleAddColor}
+            className="w-[270px] p-2 bg-blue-700 text-white hover:bg-blue-800 rounded-md transform transition-all ease-in-out duration-100 active:scale-95"
+          >
             Add
           </button>
         </form>
