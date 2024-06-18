@@ -178,7 +178,6 @@ const ProductPage = () => {
                 :براند
                 <img
                   src={product.productBrand.brandImageURL}
-                  title={`${product.productBrand.brandName} بڕاندی`}
                   alt=""
                   className="h-10"
                 />
@@ -270,24 +269,19 @@ const ProductPage = () => {
                   >
                     <span>: {productAttribute.attributeName}</span>
                     <div className="flex justify-center items-center gap-2">
-                      {productAttribute.subAttributes.map(
-                        (subAttribute, subIndex) => (
-                          <button
-                            key={subIndex}
-                            onClick={() =>
-                              handleAttributeChange(index, subAttribute.label)
-                            }
-                            className={`p-1 border rounded-md ${
-                              selectedProductAttributes[index] ===
-                              subAttribute.label
-                                ? "bg-[#FF6F00] text-white"
-                                : "bg-white text-black"
-                            }`}
-                          >
-                            {subAttribute.label}
-                          </button>
-                        )
-                      )}
+                      <button
+                        onClick={() =>
+                          handleAttributeChange(index, productAttribute.subAttributes)
+                        }
+                        className={`p-1 border rounded-md ${
+                          selectedProductAttributes[index] ===
+                          productAttribute.subAttributes
+                            ? "bg-[#FF6F00] text-white"
+                            : "bg-white text-black"
+                        }`}
+                      >
+                        {productAttribute.subAttributes}
+                      </button>
                     </div>
                   </div>
                 ))}

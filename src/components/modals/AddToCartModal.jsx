@@ -90,18 +90,18 @@ const AddToCartModal = ({
         className="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-[90%] h-[400px] overflow-y-auto bg-white rounded-md flex flex-wrap justify-between items-center gap-2 p-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-start items-start gap-2">
+        <div className="add-to-card-modal flex justify-start items-start gap-2">
           <button
             title="داخستن"
             onClick={() => setShowAddToCartModal(!showAddToCartModal)}
-            className="hover:bg-[#969393]/15 p-1 rounded-full active:scale-95 transform transition-all ease-in-out duration-100"
+            className="add-to-card-close-btn hover:bg-[#969393]/15 p-1 rounded-full active:scale-95 transform transition-all ease-in-out duration-100"
           >
             <CgClose size={25} />
           </button>
 
           <Suspense fallback={<>Loading...</>}>
-            <div className="flex justify-start items-start gap-2">
-              <div className="flex flex-col justify-start items-center gap-2">
+            <div className="add-to-card-images flex justify-start items-start gap-2">
+              <div className="add-to-card-sub-images flex flex-col justify-start items-center gap-2">
                 {product.productImageURLS.map((productImageURL, index) => (
                   <img
                     key={index}
@@ -128,7 +128,7 @@ const AddToCartModal = ({
           </Suspense>
         </div>
 
-        <div className="flex flex-col justify-end items-end gap-2.5">
+        <div className="add-to-card-info flex flex-col justify-end items-end gap-2.5">
           <h3 className="text-lg font-semibold">{product.productName}</h3>
 
           <p className="flex justify-center items-center gap-2">
@@ -158,16 +158,16 @@ const AddToCartModal = ({
                       <button
                         key={subIndex}
                         onClick={() =>
-                          handleAttributeChange(index, subAttribute.label)
+                          handleAttributeChange(index, productAttribute.subAttributes)
                         }
                         className={`p-1 border rounded-md ${
                           selectedProductAttributes[index] ===
-                          subAttribute.label
+                          productAttribute.subAttributes
                             ? "bg-[#FF6F00] text-white"
                             : "bg-white text-black"
                         }`}
                       >
-                        {subAttribute.label}
+                        {productAttribute.subAttributes}
                       </button>
                     )
                   )}

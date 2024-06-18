@@ -147,6 +147,39 @@ body.modal-active {
   .user-cart-balance {
     font-size: 16px;
   }
+
+  .add-to-card-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .add-to-card-close-btn {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .add-to-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: right;
+    margin: 0 auto;
+  }
+
+  .add-to-card-images {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .add-to-card-sub-images {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 662px) {
