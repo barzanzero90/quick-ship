@@ -221,7 +221,7 @@ const MyOrdersPage = () => {
                             />
 
                             <div className="flex flex-col justify-end items-end gap-1">
-                              <strong className="text-base">
+                              <strong className="text-base text-right">
                                 {order.product.product.productName}
                               </strong>
 

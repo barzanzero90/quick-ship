@@ -6,17 +6,12 @@ import { FormatMoney } from "../utils/FormatMoney";
 import { useProducts } from "../context/ProductsContext";
 import { useAuth } from "../context/AuthContext";
 import AddToCartModal from "./modals/AddToCartModal";
+import { ReverseTruncate } from "../utils/ReverseTruncate";
 
 const ProductCard = ({ product }) => {
   const { user } = useAuth();
-  const {
-    getUserWishLists,
-    wishLists,
-    getUserCart,
-    cart,
-    toggleWishList,
-    addToCart,
-  } = useProducts();
+  const { getUserWishLists, wishLists, getUserCart, toggleWishList } =
+    useProducts();
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   useEffect(() => {
@@ -29,6 +24,8 @@ const ProductCard = ({ product }) => {
   const isWishListed = wishLists.some(
     (wishList) => wishList.product.id == product.id
   );
+
+  const productName = "PRODUCT NAME";
 
   return (
     <div className="relative w-[250px] h-[300px]">
@@ -71,7 +68,11 @@ const ProductCard = ({ product }) => {
         )}
 
         <button
-          onClick={() => user ? setShowAddToCartModal(!showAddToCartModal) : alert("تکایە سەرەتا بچۆ ژوورەوە")}
+          onClick={() =>
+            user
+              ? setShowAddToCartModal(!showAddToCartModal)
+              : alert("تکایە سەرەتا بچۆ ژوورەوە")
+          }
           className="bg-black/50 rounded-full p-1.5 text-white active:scale-95 transform transition-all ease-in-out duration-200"
         >
           <FiShoppingCart size={25} title="زیادبکە بۆ سەبەتەی کڕین" />
@@ -90,8 +91,8 @@ const ProductCard = ({ product }) => {
         to={`/product/${product.id}`}
         className="absolute bottom-0 right-0 w-full h-10 p-1.5 flex flex-row-reverse justify-between items-center bg-black/50 text-white rounded-br-md rounded-bl-md"
       >
-        <strong className="text-2xl">{product.productName}</strong>
-        <strong className="text-lg whitespace-nowrap">
+        <strong className="text-lg text-right">{ReverseTruncate(product.productName, 10)}</strong>
+        <strong className="text-base">
           {FormatMoney(product.productPrice)} IQD
         </strong>
       </Link>

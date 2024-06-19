@@ -57,7 +57,7 @@ const AdminPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-center items-center w-full h-[150px] overflow-x-auto bg-gray-100 rounded-md">
+                  <div className="flex overflow-x-auto justify-center items-center w-full h-[150px] bg-gray-100 rounded-md">
                     <div className="w-full flex flex-col justify-center items-center gap-2 bg-gray-300 h-full rounded-tl-md rounded-bl-md">
                       <div className="flex justify-center items-center gap-1">
                         <HiOutlineShoppingBag

@@ -92,7 +92,7 @@ const MyReviewsPage = () => {
                               to={`/product/${review.productId}`}
                               className="hover:underline hover:underline-offset-2 active:opacity-75"
                             >
-                              <h3 className="text-lg font-semibold">
+                              <h3 className="text-lg font-semibold text-right">
                                 {review.productName}
                               </h3>
                             </Link>

@@ -116,7 +116,11 @@ const Header = () => {
             <IoIosArrowDown size={25} />
             {/* Show categories when mouse hover */}
             {showCategories && (
-              <Categories setShowCategories={setShowCategories} />
+              <Categories
+                setShowCategories={setShowCategories}
+                openNav={openNav}
+                setOpenNav={setOpenNav}
+              />
             )}
           </button>
         </div>
@@ -187,7 +191,11 @@ const Header = () => {
                 </button>
 
                 {showCategories && (
-                  <Categories setShowCategories={setShowCategories} />
+                  <Categories
+                    setShowCategories={setShowCategories}
+                    openNav={openNav}
+                    setOpenNav={setOpenNav}
+                  />
                 )}
               </li>
             </ul>
@@ -238,6 +246,7 @@ const Header = () => {
                   setShowSearch={setShowSearch}
                   filteredProducts={filteredProducts}
                   setOpenNav={setOpenNav}
+                  isPending={isPending}
                 />
               )}
             </div>

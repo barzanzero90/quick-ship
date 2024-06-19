@@ -59,7 +59,7 @@ const Hero = ({ product }) => {
         <div className="flex flex-col justify-end items-end gap-3 px-2">
           <Link
             to={`/product/${product.id}`}
-            className="max-w-[500px] text-3xl text-right text-wrap font-semibold hover:underline hover:underline-offset-2"
+            className="max-w-[400px] text-3xl text-right text-wrap font-semibold hover:underline hover:underline-offset-2"
           >
             {product.productName}
           </Link>

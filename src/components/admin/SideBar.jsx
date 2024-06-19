@@ -16,7 +16,8 @@ const SideBar = () => {
   const { logOutUser } = useAuth();
 
   return (
-    <div className="static top-0 left-0 flex flex-col p-3 justify-between items-start mainShadow w-full h-full">
+    <div className="static top-0 left-0 flex flex-col p-3 justify-between items-start gap-3 mainShadow w-full h-full">
+
       <div className="flex flex-col gap-6 justify-start items-start">
         <Link to="/admin/home">
           <img src={Logo} className="h-[100px]" alt="Logo" />
@@ -86,15 +87,15 @@ const SideBar = () => {
           >
             <CiStar size={25} /> Reviews
           </Link>
+
+          <button
+            onClick={logOutUser}
+            className="flex justify-center items-center gap-1 hover:bg-[#969393]/25 rounded-md active:scale-95 transform transition-all ease-in-out duration-100 p-2"
+          >
+            <CiLogout size={25} /> Logout
+          </button>
         </div>
       </div>
-
-      <button
-        onClick={logOutUser}
-        className="flex justify-center items-center gap-1 hover:bg-[#969393]/25 rounded-md active:scale-95 transform transition-all ease-in-out duration-100 p-2"
-      >
-        <CiLogout size={25} /> Logout
-      </button>
     </div>
   );
 };

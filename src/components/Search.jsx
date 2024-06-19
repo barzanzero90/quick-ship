@@ -2,7 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FormatMoney } from "../utils/FormatMoney";
 
-const Search = ({ setShowSearch, filteredProducts, setOpenNav, isPending }) => {
+const Search = ({
+  setShowSearch,
+  filteredProducts,
+  openNav,
+  setOpenNav,
+  isPending,
+}) => {
   const searchRef = useRef();
 
   useEffect(() => {
@@ -40,19 +46,20 @@ const Search = ({ setShowSearch, filteredProducts, setOpenNav, isPending }) => {
               key={index}
               to={`/product/${filteredProduct.id}`}
               onClick={() => {
+                console.log(setOpenNav(!openNav));
                 setShowSearch(false);
-                setOpenNav(false);
               }}
               className="flex flex-row-reverse justify-between items-center gap-2 p-2 w-full border-b border-b-[#e4e4e5] last:border-none"
             >
               <div className="flex flex-row-reverse justify-center items-center gap-2">
                 <img
                   src={filteredProduct.productThumbnailImageURL}
+                  loading="lazy"
                   className="w-12 h-12 object-cover rounded-md transform transition-all ease-in-out duration-200 active:scale-95"
                   alt=""
                 />
 
-                <strong className="text-lg transform transition-all ease-in-out duration-200 hover:opacity-80 active:opacity-55">
+                <strong className="text-lg text-right transform transition-all ease-in-out duration-200 hover:opacity-80 active:opacity-55">
                   {filteredProduct.productName}
                 </strong>
               </div>
