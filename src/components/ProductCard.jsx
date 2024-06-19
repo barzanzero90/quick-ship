@@ -25,8 +25,6 @@ const ProductCard = ({ product }) => {
     (wishList) => wishList.product.id == product.id
   );
 
-  const productName = "PRODUCT NAME";
-
   return (
     <div className="relative w-[250px] h-[300px]">
       <Link to={`/product/${product.id}`}>
@@ -91,7 +89,7 @@ const ProductCard = ({ product }) => {
         to={`/product/${product.id}`}
         className="absolute bottom-0 right-0 w-full h-10 p-1.5 flex flex-row-reverse justify-between items-center bg-black/50 text-white rounded-br-md rounded-bl-md"
       >
-        <strong className="text-lg text-right">{ReverseTruncate(product.productName, 10)}</strong>
+        <strong className="text-lg text-right">{ReverseTruncate(product.productName, 8)}</strong>
         <strong className="text-base">
           {FormatMoney(product.productPrice)} IQD
         </strong>
