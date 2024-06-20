@@ -83,7 +83,7 @@ export function OrdersProvider({ children }) {
       const userDoc = doc(db, "users", user.email);
       await updateDoc(userDoc, {
         userMoney: user?.userMoney - totalMoney - orderData.address.city.deliveryPrice,
-        userMoneySpent: user?.userMoneySpent + totalMoney - orderData.address.city.deliveryPrice,
+        userMoneySpent: user?.userMoneySpent + totalMoney + orderData.address.city.deliveryPrice,
       });
 
       if (isFromCart) {

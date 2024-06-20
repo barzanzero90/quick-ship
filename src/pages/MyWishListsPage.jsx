@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 const MyWishListsPage = () => {
   const { user, userExistsInLocalStorage, loading } = useAuth();
   const { toggleWishList, getUserWishLists, wishLists } = useProducts();
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const navigate = useNavigate();
 
@@ -24,6 +25,11 @@ const MyWishListsPage = () => {
       getUserWishLists(user);
     }
   }, [user]);
+
+  const handleAddToCartProduct = (selectedProduct) => {
+    setSelectedProduct(selectedProduct);
+    setShowAddToCartModal(true);
+  };
 
   return (
     <main className="pt-[30px]">
@@ -71,7 +77,14 @@ const MyWishListsPage = () => {
                       className="flex flex-row-reverse justify-between items-center px-2 w-full"
                     >
                       <p className="text-lg text-right font-semibold hover:underline hover:underline-offset-4">
-                        {wishList.product.productName}
+                        {wishList.product.productName.length > 23 ? (
+                          <>
+                            {wishList.product.productName.slice(0, 23)} <br />{" "}
+                            ...
+                          </>
+                        ) : (
+                          <>{wishList.product.productName}</>
+                        )}
                       </p>
                       <p className="text-lg font-bold">
                         {FormatMoney(wishList.product.productPrice)} IQD
@@ -80,9 +93,7 @@ const MyWishListsPage = () => {
 
                     <div className="py-2">
                       <button
-                        onClick={() =>
-                          setShowAddToCartModal(!showAddToCartModal)
-                        }
+                        onClick={() => handleAddToCartProduct(wishList.product)}
                         className="user-wish-list-add-to-cart-btn flex justify-center items-center gap-2 md:w-[300px] w-[250px] rounded-md p-2 bg-[#FF6F00] text-black hover:text-white transform transition-all duration-100 ease-in-out active:scale-95"
                       >
                         <FiShoppingCart size={25} />
@@ -94,7 +105,7 @@ const MyWishListsPage = () => {
                       <AddToCartModal
                         showAddToCartModal={showAddToCartModal}
                         setShowAddToCartModal={setShowAddToCartModal}
-                        product={wishList.product}
+                        product={selectedProduct}
                       />
                     )}
                   </div>

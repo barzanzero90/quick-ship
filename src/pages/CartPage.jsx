@@ -181,8 +181,14 @@ const CartPage = () => {
           />
 
           <div className="flex flex-col justify-center items-center gap-2">
-            <strong className="text-lg hover:underline hover:underline-offset-4">
-              {row.productName}
+            <strong className="text-lg text-right hover:underline hover:underline-offset-4">
+              {row.productName.length > 23 ? (
+                <>
+                  {row.productName.slice(0, 23)} <br /> ...
+                </>
+              ) : (
+                <>{row.productName}</>
+              )}
             </strong>
 
             <p>{row.selectedProductAttributes.join(" - ")}</p>
@@ -297,7 +303,14 @@ const CartPage = () => {
                       <div className="flex flex-col justify-end items-end gap-6">
                         <div className="flex flex-col justify-end items-end gap-0.5">
                           <strong className="text-base font-semibold">
-                            {cartItem.product.productName}
+                            {cartItem.product.productName.length > 23 ? (
+                              <>
+                                {cartItem.product.productName.slice(0, 23)}{" "}
+                                <br /> ...
+                              </>
+                            ) : (
+                              <>{cartItem.product.productName}</>
+                            )}
                           </strong>
 
                           <div className="flex flex-wrap justify-end items-end gap-2">

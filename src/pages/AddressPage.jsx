@@ -18,7 +18,7 @@ const AddressPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!userExistsInLocalStorage && loading){
+    if (!userExistsInLocalStorage && loading) {
       navigate("/");
     }
   }, [userExistsInLocalStorage, loading, navigate]);

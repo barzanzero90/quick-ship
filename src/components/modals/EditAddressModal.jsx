@@ -37,7 +37,13 @@ const EditAddressModal = ({
 
   const handleEditAddress = async () => {
     try {
-      if (country && city && address.trim() != "" && phoneNumber.trim() != "") {
+      if (
+        country &&
+        city &&
+        address.trim() != "" &&
+        phoneNumber.trim() != "" &&
+        phoneNumber.length <= 11
+      ) {
         const editedData = {
           country,
           city,
@@ -47,6 +53,8 @@ const EditAddressModal = ({
         await editAddress(userEmail, addressInfo.id, editedData);
         alert("ناونیشانەکەت بەسەرکەوتووی دەستکاری کرا");
         setShowEditAddressModal(false);
+      } else if (phoneNumber.length > 11) {
+        return alert("نابێت ژمارەی مۆبایل لە 11 ژمارە زیاتر بێت");
       }
     } catch (error) {
       dispatch({ type: LOCATION_ACTIONS.SET_ERROR, payload: error.message });

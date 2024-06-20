@@ -38,7 +38,13 @@ const AddAddressModal = ({
 
   const handleAddAddress = async () => {
     try {
-      if (country && city && address.trim() !== "" && phoneNumber) {
+      if (
+        country &&
+        city &&
+        address.trim() !== "" &&
+        phoneNumber &&
+        phoneNumber.length <= 11
+      ) {
         const addressData = {
           country,
           city,
@@ -49,6 +55,8 @@ const AddAddressModal = ({
         await addAddress(userEmail, addressData);
         alert("ناونیشانەکەت بەسەرکەوتووی زیادکرا");
         setShowAddAddressModal(false);
+      } else if (phoneNumber.length > 11) {
+        return alert("نابێت ژمارەی مۆبایل لە 11 ژمارە زیاتر بێت");
       }
     } catch (error) {
       dispatch({ type: LOCATION_ACTIONS.SET_ERROR, payload: error.message });

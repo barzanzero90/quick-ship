@@ -25,10 +25,12 @@ const NewestProducts = () => {
   };
 
   return (
-    <div className="newestProducts pt-[160px]">
-      <div className="flex flex-col justify-center items-center gap-5 bg-white mainShadow w-[95%] mx-auto rounded-md p-2">
+    <div className="newestProducts pt-[160px] w-[95%] mx-auto">
+      <div className="flex flex-col justify-center items-center gap-5 bg-white mainShadow w-full mx-auto rounded-md p-2">
         <div className="flex flex-row-reverse justify-between items-center w-full px-2">
-          <h2 className="text-2xl font-semibold text-right">نوێترین بەرهەمەکان</h2>
+          <h2 className="text-2xl font-semibold text-right">
+            نوێترین بەرهەمەکان
+          </h2>
 
           <div className="flex flex-row-reverse justify-center items-center gap-5">
             <button
@@ -37,6 +39,7 @@ const NewestProducts = () => {
             >
               <MdOutlineKeyboardArrowRight size={35} />
             </button>
+
             <button
               className="bg-white rounded-full p-1 mainShadow active:scale-95 transform transition-all ease-in-out duration-100"
               onClick={goPrev}
@@ -46,14 +49,8 @@ const NewestProducts = () => {
           </div>
         </div>
 
-        <div className="relative flex flex-row-reverse justify-center items-center w-full">
-          <Swiper
-            ref={swiperRef}
-            loop
-            slidesPerView={5}
-            spaceBetween={15}
-            width={1300}
-          >
+        <div className="flex justify-center items-center w-full px-3">
+          <Swiper ref={swiperRef} loop slidesPerView={5} spaceBetween={50}>
             {products.slice(0, 10).map((product, index) => (
               <SwiperSlide key={index}>
                 <ProductCard product={product} />

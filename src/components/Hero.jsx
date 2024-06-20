@@ -113,7 +113,9 @@ const Hero = ({ product }) => {
               </>
             ) : (
               <div className="flex flex-col justify-center items-center gap-2">
-                <p className="text-xl">{FormatMoney(product.productPrice)} IQD</p>
+                <p className="text-xl">
+                  {FormatMoney(product.productPrice)} IQD
+                </p>
               </div>
             )}
           </div>
@@ -164,7 +166,7 @@ const Hero = ({ product }) => {
 
             {showUserAddressModal && (
               <>
-                {user.userMoney >= product.productPrice ? (
+                {user.userMoney >= totalPrice ? (
                   <UserAddressModal
                     showUserAddressModal={showUserAddressModal}
                     setShowUserAddressModal={setShowUserAddressModal}
@@ -197,8 +199,8 @@ const Hero = ({ product }) => {
           {orders
             .filter((order) => order.orderType == "Product")
             .slice(0, 3)
-            .flatMap((productOrder) => (
-              <ProductCard product={productOrder.product.product} />
+            .flatMap((productOrder, index) => (
+              <ProductCard key={index} product={productOrder.product.product} />
             ))}
         </div>
       </div>

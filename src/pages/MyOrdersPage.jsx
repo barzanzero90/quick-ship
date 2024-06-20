@@ -102,7 +102,13 @@ const MyOrdersPage = () => {
           className="flex flex-col justify-center items-center gap-2"
         >
           <strong className="text-base hover:underline hover:underline-offset-4">
-            {row.product.product.productName}
+            {row.product.product.productName.length > 23 ? (
+              <>
+                {row.product.product.productName.slice(0, 23)} <br /> ...
+              </>
+            ) : (
+              <>{row.product.product.productName}</>
+            )}
           </strong>
 
           <div className="flex justify-center items-center gap-2">
@@ -222,7 +228,18 @@ const MyOrdersPage = () => {
 
                             <div className="flex flex-col justify-end items-end gap-1">
                               <strong className="text-base text-right">
-                                {order.product.product.productName}
+                                {order.product.product.productName.length >
+                                23 ? (
+                                  <>
+                                    ...
+                                    {order.product.product.productName.slice(
+                                      0,
+                                      23
+                                    )}
+                                  </>
+                                ) : (
+                                  <>{order.product.product.productName}</>
+                                )}
                               </strong>
 
                               <div className="flex justify-center items-center gap-2">
@@ -239,7 +256,7 @@ const MyOrdersPage = () => {
                               </div>
 
                               <div className="product-order-summary flex flex-row-reverse justify-center items-center gap-10">
-                                <strong className="text-[#FF6F00]">
+                                <strong className="text-[#FF6F00] text-right">
                                   {FormatMoney(order.product.totalPrice)} IQD
                                 </strong>
 

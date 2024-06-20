@@ -15,7 +15,7 @@ const UserAddressModal = ({
   cart,
   orderNote,
   totalMoney,
-  isFromCart
+  isFromCart,
 }) => {
   hideScrollBar(showUserAddressModal);
 
@@ -44,6 +44,8 @@ const UserAddressModal = ({
   useEffect(() => {
     getCountries();
   }, [countries]);
+
+  // const selectedAddressDileveryPrice = activeAddress.city.deliveryPrice;
 
   const handleOrderProduct = async () => {
     try {
@@ -148,7 +150,13 @@ const UserAddressModal = ({
             </button>
           </div>
           <button
-            onClick={handleOrderProduct}
+            onClick={() => {
+              user?.userMoney >= activeAddress?.city.deliveryPrice
+                ? handleOrderProduct()
+                : alert(
+                    "ناتوانیت بۆ ئەم ناونیشانە داواکاری بکەت، چونکە باڵانسی پێویستت نییە"
+                  );
+            }}
             className="bg-[#FF6F00] w-[150px] text-black rounded-md p-2 transform transition-all duration-100 ease-in-out hover:text-white active:scale-95"
           >
             داواکردن

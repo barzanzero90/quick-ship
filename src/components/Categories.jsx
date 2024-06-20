@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useCategories } from "../context/CategoriesContext";
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Categories = ({ setShowCategories, openNav, setOpenNav }) => {
@@ -8,7 +7,7 @@ const Categories = ({ setShowCategories, openNav, setOpenNav }) => {
 
   return (
     <div
-      className="md:absolute md:top-10 md:left-0 md:h-14 w-full bg-[#F5E5D7]/95 flex flex-col justify-end items-end gap-3 p-2"
+      className="md:absolute md:top-[30px] md:left-0 md:h-[100px] w-full bg-[#F5E5D7]/95 flex flex-col justify-end items-end gap-3 p-2"
       style={{ zIndex: 999 }}
     >
       <>

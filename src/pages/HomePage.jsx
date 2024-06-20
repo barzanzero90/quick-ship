@@ -20,16 +20,20 @@ const HomePage = () => {
   };
 
   return (
-    <main className="flex flex-col gap-12 w-full pb-3">
+    <div className="flex flex-col gap-12 w-full pb-3">
       <Helmet>
         <title>گەیاندنی خێرا</title>
       </Helmet>
 
-      {products.slice(0, 1).map((product) => (
-        <Hero key={product.id} product={product} />
-      ))}
+      <div className="w-full">
+        {products.slice(0, 1).map((product, index) => (
+          <Hero key={index} product={product} />
+        ))}
+      </div>
 
-      <NewestProducts />
+      <div className="w-full">
+        <NewestProducts />
+      </div>
 
       {categories.map((category) => {
         let categoryProducts = getCategoryProducts(category.categoryName);
@@ -45,7 +49,7 @@ const HomePage = () => {
         }
         return null;
       })}
-    </main>
+    </div>
   );
 };
 
