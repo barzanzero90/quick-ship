@@ -4,6 +4,7 @@ import { useCategories } from "../context/CategoriesContext";
 import { useProducts } from "../context/ProductsContext";
 import ProductCard from "../components/ProductCard";
 import { Helmet } from "react-helmet";
+import AddToCartModal from "../components/modals/AddToCartModal";
 
 const ProductCategoryPage = () => {
   const { categorySlug } = useParams();
@@ -11,6 +12,8 @@ const ProductCategoryPage = () => {
   const { products } = useProducts();
   const [category, setCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   const getProductsByCategory = () => {
     const foundCategory = categories.find(
@@ -44,10 +47,15 @@ const ProductCategoryPage = () => {
           product.productCategory.categoryName === category?.categoryName
       );
 
+  const handleAddToCart = (selectedProduct) => {
+    setSelectedProduct(selectedProduct);
+    setShowAddToCartModal(true);
+  };
+
   return (
     <>
       {category ? (
-        <main className="grid grid-cols-3 gap-5 p-3 w-full">
+        <div className="grid grid-cols-3 gap-5 p-3 w-full">
           <Helmet>
             <title>{category.categoryName} گەیاندنی خێرا | بەرهەمەکانی</title>
           </Helmet>
@@ -56,9 +64,20 @@ const ProductCategoryPage = () => {
             <div className="flex flex-row-reverse flex-wrap justify-center items-center gap-4">
               {filteredProducts.map((product, index) => (
                 <div key={index}>
-                  <ProductCard product={product} />
+                  <ProductCard
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                  />
                 </div>
               ))}
+
+              {showAddToCartModal && (
+                <AddToCartModal
+                  showAddToCartModal={showAddToCartModal}
+                  setShowAddToCartModal={setShowAddToCartModal}
+                  product={selectedProduct}
+                />
+              )}
             </div>
           </div>
 
@@ -95,9 +114,15 @@ const ProductCategoryPage = () => {
               ))}
             </div>
           </div>
-        </main>
+        </div>
       ) : (
-        <>ئەم بەشە بوونی نییە</>
+        <div
+          className="absolute top-0 left-0 w-full h-screen flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
       )}
     </>
   );

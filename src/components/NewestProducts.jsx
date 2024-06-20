@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -7,10 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import ProductCard from "./ProductCard";
 import { useProducts } from "../context/ProductsContext";
+import AddToCartModal from "./modals/AddToCartModal";
 
 const NewestProducts = () => {
   const swiperRef = useRef(null);
   const { products } = useProducts();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   const goNext = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
@@ -22,6 +25,11 @@ const NewestProducts = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
       swiperRef.current.swiper.slidePrev();
     }
+  };
+
+  const handleAddToCart = (selectedProduct) => {
+    setSelectedProduct(selectedProduct);
+    setShowAddToCartModal(true);
   };
 
   return (
@@ -50,14 +58,28 @@ const NewestProducts = () => {
         </div>
 
         <div className="flex justify-center items-center w-full px-3">
-          <Swiper ref={swiperRef} loop slidesPerView={5} spaceBetween={50}>
+          <Swiper
+            ref={swiperRef}
+            loop
+            slidesPerView={5}
+            spaceBetween={50}
+            width={1300}
+          >
             {products.slice(0, 10).map((product, index) => (
               <SwiperSlide key={index}>
-                <ProductCard product={product} />
+                <ProductCard product={product} onAddToCart={handleAddToCart} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
+
+        {showAddToCartModal && (
+          <AddToCartModal
+            showAddToCartModal={showAddToCartModal}
+            setShowAddToCartModal={setShowAddToCartModal}
+            product={selectedProduct}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,9 +7,12 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
+import AddToCartModal from "./modals/AddToCartModal";
 
 const CategoryProducts = ({ categoryName, categorySlug, products }) => {
   const swiperRef = useRef(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   const goNext = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
@@ -25,14 +28,31 @@ const CategoryProducts = ({ categoryName, categorySlug, products }) => {
 
   // console.log(`Rendering products for category: ${categoryName}`, products);
 
+  const handleAddToCart = (selectedProduct) => {
+    setSelectedProduct(selectedProduct);
+    setShowAddToCartModal(true);
+  };
+
   return (
     <div className="relative flex flex-col justify-center items-end gap-5 bg-white mainShadow w-[95%] mx-auto rounded-md p-2">
       <h2 className="text-2xl font-semibold text-right">{categoryName}</h2>
 
       <div className="relative hidden lg:flex flex-row-reverse justify-center items-center w-full gap-5 xl:gap-2.5">
         {products.slice(0, 6).map((product, index) => (
-          <ProductCard key={index} product={product} />
+          <ProductCard
+            key={index}
+            product={product}
+            onAddToCart={handleAddToCart}
+          />
         ))}
+
+        {showAddToCartModal && (
+          <AddToCartModal
+            showAddToCartModal={showAddToCartModal}
+            setShowAddToCartModal={setShowAddToCartModal}
+            product={selectedProduct}
+          />
+        )}
       </div>
 
       <div className="lg:hidden relative flex flex-row-reverse justify-center items-center w-full mx-auto">
@@ -45,10 +65,18 @@ const CategoryProducts = ({ categoryName, categorySlug, products }) => {
         >
           {products.slice(0, 6).map((product, index) => (
             <SwiperSlide key={index}>
-              <ProductCard product={product} />
+              <ProductCard product={product} onAddToCart={handleAddToCart} />
             </SwiperSlide>
           ))}
         </Swiper>
+
+        {showAddToCartModal && (
+          <AddToCartModal
+            showAddToCartModal={showAddToCartModal}
+            setShowAddToCartModal={setShowAddToCartModal}
+            product={selectedProduct}
+          />
+        )}
 
         <div
           className="absolute top-[50%] left-0 p-2 flex flex-row-reverse justify-between items-center w-full"

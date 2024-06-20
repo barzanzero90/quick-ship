@@ -49,7 +49,7 @@ const AddReviewModal = ({
     console.log("ADD REVIEW BUTTON CLICKED");
 
     try {
-      if (reviewText.trim() != "" && reviewStar != 0) {
+      if (reviewStar != 0) {
         const reviewData = {
           productId: selectedOrder.product.id,
           productThumbnailImageURL:
@@ -66,6 +66,8 @@ const AddReviewModal = ({
         await addReview(reviewData);
         alert("بۆچوونەکەت زیادکرا");
         setShowAddReviewModal(false);
+      } else {
+        return alert("تکایە ئەستێرە زیادبکە");
       }
     } catch (error) {
       dispatch({ type: REVIEWS_ACTIONS.SET_ERROR, payload: error.message });

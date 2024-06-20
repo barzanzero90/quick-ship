@@ -21,6 +21,7 @@ import { db } from "../firebase/firebaseConfig";
 const CategoriesContext = createContext();
 
 const categoriesInitialState = {
+  loading: true,
   error: null,
   categories: [],
   subCategories: [],
@@ -28,6 +29,9 @@ const categoriesInitialState = {
 
 function categoriesReducer(state, action) {
   switch (action.type) {
+    case CATEGORIESACTIONS.SET_LOADING:
+      return { ...state };
+
     case CATEGORIESACTIONS.SET_ERROR:
       return { ...state, payload: action.payload };
 
@@ -56,6 +60,7 @@ export function CategoriesProvider({ children }) {
 
   const getCategories = async () => {
     try {
+      dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: true });
       const categoriesCollection = collection(db, "categories");
       onSnapshot(
         query(categoriesCollection, orderBy("createdAt", "desc")),
@@ -68,6 +73,7 @@ export function CategoriesProvider({ children }) {
             type: CATEGORIESACTIONS.SET_CATEGORIES,
             payload: categories,
           });
+          dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: false });
         }
       );
     } catch (error) {
@@ -128,6 +134,7 @@ export function CategoriesProvider({ children }) {
 
   const getSubCategories = async (categoryId) => {
     try {
+      dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: true });
       const subCategoriesCollection = collection(
         db,
         `categories/${categoryId}/subCategories`
@@ -143,6 +150,7 @@ export function CategoriesProvider({ children }) {
             type: CATEGORIESACTIONS.SET_SUB_CATEGORIES,
             payload: subCategories,
           });
+          dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: false });
         }
       );
     } catch (error) {

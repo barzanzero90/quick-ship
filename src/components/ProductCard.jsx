@@ -8,11 +8,10 @@ import { useAuth } from "../context/AuthContext";
 import AddToCartModal from "./modals/AddToCartModal";
 import { ReverseTruncate } from "../utils/ReverseTruncate";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onAddToCart }) => {
   const { user } = useAuth();
   const { getUserWishLists, wishLists, getUserCart, toggleWishList } =
     useProducts();
-  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -67,9 +66,7 @@ const ProductCard = ({ product }) => {
 
         <button
           onClick={() =>
-            user
-              ? setShowAddToCartModal(!showAddToCartModal)
-              : alert("تکایە سەرەتا بچۆ ژوورەوە")
+            user ? onAddToCart(product) : alert("تکایە سەرەتا بچۆ ژوورەوە")
           }
           className="bg-black/50 rounded-full p-1.5 text-white active:scale-95 transform transition-all ease-in-out duration-200"
         >
@@ -77,19 +74,13 @@ const ProductCard = ({ product }) => {
         </button>
       </div>
 
-      {showAddToCartModal && (
-        <AddToCartModal
-          showAddToCartModal={showAddToCartModal}
-          setShowAddToCartModal={setShowAddToCartModal}
-          product={product}
-        />
-      )}
-
       <Link
         to={`/product/${product.id}`}
         className="absolute bottom-0 right-0 w-full h-10 p-1.5 flex flex-row-reverse justify-between items-center bg-black/50 text-white rounded-br-md rounded-bl-md"
       >
-        <strong className="text-lg text-right">{ReverseTruncate(product.productName, 8)}</strong>
+        <strong className="text-lg text-right">
+          {ReverseTruncate(product.productName, 8)}
+        </strong>
         <strong className="text-base">
           {FormatMoney(product.productPrice)} IQD
         </strong>

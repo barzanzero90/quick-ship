@@ -177,6 +177,15 @@ body.modal-active {
   }
 }
 
+@media (max-width: 891px) {
+  .my-address-modal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 @media (max-width: 662px) {
   .balance-order-card {
     width: 250px;

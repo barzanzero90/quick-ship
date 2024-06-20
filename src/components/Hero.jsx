@@ -14,7 +14,6 @@ const Hero = ({ product }) => {
   const { orders } = useOrders();
   const [totalPrice, setTotalPrice] = useState(0);
   const [showUserAddressModal, setShowUserAddressModal] = useState(false);
-  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const [selectedProductAttributes, setSelectedProductAttributes] = useState(
     () => {
       return product && product.productAttributes
@@ -24,6 +23,8 @@ const Hero = ({ product }) => {
         : [];
     }
   );
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -44,6 +45,11 @@ const Hero = ({ product }) => {
   const isWishListed = wishLists.some(
     (wishList) => wishList.product.id == product.id
   );
+
+  const handleAddToCart = (selectedProduct) => {
+    setSelectedProduct(selectedProduct);
+    setShowAddToCartModal(true);
+  };
 
   return (
     <div className="hero relative bg-[#F5E5D7] w-full h-[600px] flex flex-col justify-center items-center gap-5 pt-48 pb-2">
@@ -200,9 +206,21 @@ const Hero = ({ product }) => {
             .filter((order) => order.orderType == "Product")
             .slice(0, 3)
             .flatMap((productOrder, index) => (
-              <ProductCard key={index} product={productOrder.product.product} />
+              <ProductCard
+                key={index}
+                product={productOrder.product.product}
+                onAddToCart={handleAddToCart}
+              />
             ))}
         </div>
+
+        {showAddToCartModal && (
+          <AddToCartModal
+            showAddToCartModal={showAddToCartModal}
+            setShowAddToCartModal={setShowAddToCartModal}
+            product={selectedProduct}
+          />
+        )}
       </div>
     </div>
   );

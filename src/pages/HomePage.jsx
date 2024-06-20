@@ -8,7 +8,7 @@ import { useCategories } from "../context/CategoriesContext";
 import { Helmet } from "react-helmet";
 
 const HomePage = () => {
-  const { products } = useProducts();
+  const { products, loading } = useProducts();
   const { categories } = useCategories();
 
   const getCategoryProducts = (categoryName) => {
@@ -25,30 +25,44 @@ const HomePage = () => {
         <title>گەیاندنی خێرا</title>
       </Helmet>
 
-      <div className="w-full">
-        {products.slice(0, 1).map((product, index) => (
-          <Hero key={index} product={product} />
-        ))}
-      </div>
+      {loading ? (
+        <div
+          className="absolute top-0 left-0 w-full h-screen flex flex-col gap-2 justify-center items-center bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 999 }}
+        >
+          <div className="loader"></div>
+          <p>...چاوەڕێ بە</p>
+        </div>
+      ) : (
+        <>
+          <div className="w-full">
+            {products.slice(0, 1).map((product, index) => (
+              <Hero key={index} product={product} />
+            ))}
+          </div>
 
-      <div className="w-full">
-        <NewestProducts />
-      </div>
+          <div className="w-full">
+            <NewestProducts />
+          </div>
 
-      {categories.map((category) => {
-        let categoryProducts = getCategoryProducts(category.categoryName);
-        if (["منداڵان", "ئافرەتان", "پیاوان"].includes(category.categoryName)) {
-          return (
-            <CategoryProducts
-              key={category.id}
-              categoryName={category.categoryName}
-              categorySlug={category.categorySlug}
-              products={categoryProducts}
-            />
-          );
-        }
-        return null;
-      })}
+          {categories.map((category) => {
+            let categoryProducts = getCategoryProducts(category.categoryName);
+            if (
+              ["منداڵان", "ئافرەتان", "پیاوان"].includes(category.categoryName)
+            ) {
+              return (
+                <CategoryProducts
+                  key={category.id}
+                  categoryName={category.categoryName}
+                  categorySlug={category.categorySlug}
+                  products={categoryProducts}
+                />
+              );
+            }
+            return null;
+          })}
+        </>
+      )}
     </div>
   );
 };

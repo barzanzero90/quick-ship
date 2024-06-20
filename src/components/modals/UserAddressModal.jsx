@@ -103,7 +103,7 @@ const UserAddressModal = ({
             </button>
           </div>
 
-          <div className="flex flex-row-reverse flex-wrap gap-3 p-1.5">
+          <div className="my-address-modal flex flex-row-reverse flex-wrap gap-3 p-1.5">
             {address.map((address, index) => (
               <div
                 key={index}

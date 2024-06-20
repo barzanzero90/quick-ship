@@ -67,6 +67,7 @@ export function ProductsProvider({ children }) {
 
   const getProducts = async () => {
     try {
+      dispatch({ type: PRODUCTSACTIONS.SET_LOADING, payload: true });
       const productsCollection = collection(db, "products");
       onSnapshot(
         query(productsCollection, orderBy("createdAt", "desc")),
@@ -76,6 +77,7 @@ export function ProductsProvider({ children }) {
             ...doc.data(),
           }));
           dispatch({ type: PRODUCTSACTIONS.SET_PRODUCTS, payload: products });
+          dispatch({ type: PRODUCTSACTIONS.SET_LOADING, payload: false });
         }
       );
     } catch (error) {

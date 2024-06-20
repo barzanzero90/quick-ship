@@ -47,7 +47,7 @@ const EditReviewModal = ({
 
   const handleEditReview = async () => {
     try {
-      if (reviewText.trim() != "" && reviewStar) {
+      if (reviewStar != 0) {
         const reviewData = {
           id: selectedReview.id,
           reviewStar,
@@ -57,6 +57,8 @@ const EditReviewModal = ({
         await editReview(reviewData);
         alert("بەسەرکەوتووی بۆچوونەکەت دەستکاری کرد");
         setShowEditReviewModal(false);
+      } else {
+        return alert("تکایە ئەستێرە زیادبکە");
       }
     } catch (error) {
       dispatch({ type: REVIEWS_ACTIONS.SET_ERROR, payload: error.message });
