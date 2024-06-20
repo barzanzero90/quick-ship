@@ -19,7 +19,7 @@ import { Helmet } from "react-helmet";
 const ProductPage = () => {
   const { productId } = useParams();
   const { user, userExistsInLocalStorage } = useAuth();
-  const { products, getUserWishLists, wishLists, toggleWishList, addToCart } =
+  const { products, getUserWishLists, wishLists, toggleWishList } =
     useProducts();
   const [product, setProduct] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -27,15 +27,10 @@ const ProductPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const [showUserAddressModal, setShowUserAddressModal] = useState(false);
-  const { reviews, deleteReview } = useReviews();
+  const { reviews } = useReviews();
+  // Initialize selectedProductAttributes to select the first sub-attribute by default
   const [selectedProductAttributes, setSelectedProductAttributes] = useState(
-    () => {
-      return product && product.productAttributes
-        ? product.productAttributes.map((attr) =>
-            attr.subAttributes.length > 0 ? attr.subAttributes[0].label : ""
-          )
-        : [];
-    }
+    []
   );
   const [showReviewActionsModal, setShowReviewActionsModal] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
@@ -68,6 +63,14 @@ const ProductPage = () => {
             product.productPrice *
             (1 - product.productDiscount / 100);
       setTotalPrice(price);
+
+      // Initialize selectedProductAttributes to select the first sub-attribute by default
+      const initialAttributes = product.productAttributes
+        ? product.productAttributes.map((attr) =>
+            attr.subAttributes.length > 0 ? attr.subAttributes[0] : ""
+          )
+        : [];
+      setSelectedProductAttributes(initialAttributes);
     }
   }, [product, quantity]);
 
@@ -269,19 +272,23 @@ const ProductPage = () => {
                   >
                     <span>: {productAttribute.attributeName}</span>
                     <div className="flex justify-center items-center gap-2">
-                      <button
-                        onClick={() =>
-                          handleAttributeChange(index, productAttribute.subAttributes)
-                        }
-                        className={`p-1 border rounded-md ${
-                          selectedProductAttributes[index] ===
-                          productAttribute.subAttributes
-                            ? "bg-[#FF6F00] text-white"
-                            : "bg-white text-black"
-                        }`}
-                      >
-                        {productAttribute.subAttributes}
-                      </button>
+                      {productAttribute.subAttributes.map(
+                        (subAttribute, subIndex) => (
+                          <button
+                            key={subIndex}
+                            onClick={() =>
+                              handleAttributeChange(index, subAttribute)
+                            }
+                            className={`p-1 border rounded-md ${
+                              selectedProductAttributes[index] === subAttribute
+                                ? "bg-[#FF6F00] text-white"
+                                : "bg-white text-black"
+                            }`}
+                          >
+                            {subAttribute}
+                          </button>
+                        )
+                      )}
                     </div>
                   </div>
                 ))}
@@ -353,9 +360,7 @@ const ProductPage = () => {
                     userExistsInLocalStorage
                       ? user?.userMoney >= totalPrice
                         ? setShowUserAddressModal(!showUserAddressModal)
-                        : alert(
-                            "ناتوانیت داوای ئەم بەرهەمە بکەیت، چونکە باڵانسی پێویستت نییە"
-                          )
+                        : alert("باڵانسی پێویستت نییە بۆ داواکردنی ئەم بەرهەمە")
                       : alert("تکایە سەرەتا بچۆ ژوورەوە")
                   }
                   className="bg-[#FF6F00] py-2 px-3 text-white rounded-md active:scale-95 transform transition-all ease-in-out duration-100 hover:bg-[#e47017]"

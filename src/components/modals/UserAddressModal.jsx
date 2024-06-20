@@ -69,6 +69,7 @@ const UserAddressModal = ({
           };
 
           await handleOrder(orderData, user, totalMoney, cart, isFromCart);
+          alert("داواکاریەکەت سەرکەوتووبوو");
           setShowUserAddressModal(false);
         });
       } else {

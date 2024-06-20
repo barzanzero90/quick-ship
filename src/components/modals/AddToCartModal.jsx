@@ -18,12 +18,14 @@ const AddToCartModal = ({
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Initialize selectedProductAttributes safely
+  // Initialize selectedProductAttributes to select the first sub-attribute by default
   const [selectedProductAttributes, setSelectedProductAttributes] = useState(
     () => {
-      return product && product.productAttributes
+      return product?.productAttributes
         ? product.productAttributes.map((attr) =>
-            attr.subAttributes.length > 0 ? attr.subAttributes[0].label : ""
+            attr.subAttributes.length > 0
+              ? attr.subAttributes[0] // Select the first sub-attribute
+              : ""
           )
         : [];
     }
@@ -62,9 +64,7 @@ const AddToCartModal = ({
       const cartData = {
         product,
         quantity,
-        selectedProductAttributes: selectedProductAttributes.map((selectedProductAttribute) => ({
-          label: selectedProductAttribute,
-        })),
+        selectedProductAttributes,
         totalPrice,
         addedAt: new Date(),
       };
@@ -150,7 +150,10 @@ const AddToCartModal = ({
 
           <div className="flex flex-col justify-end items-end gap-4">
             {product.productAttributes.map((productAttribute, index) => (
-              <div key={index} className="flex flex-row-reverse justify-center items-center gap-2">
+              <div
+                key={index}
+                className="flex flex-row-reverse justify-center items-center gap-2"
+              >
                 <span>: {productAttribute.attributeName}</span>
                 <div className="flex justify-center items-center gap-2">
                   {productAttribute.subAttributes.map(
@@ -158,16 +161,15 @@ const AddToCartModal = ({
                       <button
                         key={subIndex}
                         onClick={() =>
-                          handleAttributeChange(index, productAttribute.subAttributes)
+                          handleAttributeChange(index, subAttribute)
                         }
                         className={`p-1 border rounded-md ${
-                          selectedProductAttributes[index] ===
-                          productAttribute.subAttributes
+                          selectedProductAttributes[index] === subAttribute
                             ? "bg-[#FF6F00] text-white"
                             : "bg-white text-black"
                         }`}
                       >
-                        {productAttribute.subAttributes}
+                        {subAttribute}
                       </button>
                     )
                   )}

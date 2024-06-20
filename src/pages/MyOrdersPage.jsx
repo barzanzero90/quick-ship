@@ -115,7 +115,7 @@ const MyOrdersPage = () => {
             {row.product.selectedProductAttributes.map(
               (selectedProductAttribute, index) => (
                 <p key={index} className="text-[#969393] text-sm">
-                  {selectedProductAttribute.label}
+                  {selectedProductAttribute}
                 </p>
               )
             )}
@@ -249,7 +249,7 @@ const MyOrdersPage = () => {
                                       key={index}
                                       className="text-[#969393] text-sm"
                                     >
-                                      {selectedProductAttribute.label}
+                                      {selectedProductAttribute}
                                     </p>
                                   )
                                 )}
