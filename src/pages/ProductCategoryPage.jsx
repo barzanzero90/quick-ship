@@ -27,13 +27,10 @@ const ProductCategoryPage = () => {
     getProductsByCategory();
   }, [categories, categorySlug, getSubCategories, subCategories]);
 
-  const handleSelectedSubCategory = (subCategory) => {
-    setSelectedSubCategory(subCategory);
-  };
-
-  const handleShowAllProducts = () => {
+   // Reset the selectedSubCategory when categorySlug changes
+  useEffect(() => {
     setSelectedSubCategory(null);
-  };
+  }, [categorySlug]);
 
   const filteredProducts = selectedSubCategory
     ? products.filter(
@@ -47,6 +44,14 @@ const ProductCategoryPage = () => {
           product.productCategory.categoryName === category?.categoryName
       );
 
+  const handleSelectedSubCategory = (subCategory) => {
+    setSelectedSubCategory(subCategory);
+  };
+
+  const handleShowAllProducts = () => {
+    setSelectedSubCategory(null);
+  };
+
   const handleAddToCart = (selectedProduct) => {
     setSelectedProduct(selectedProduct);
     setShowAddToCartModal(true);
@@ -57,7 +62,7 @@ const ProductCategoryPage = () => {
       {category ? (
         <div className="grid grid-cols-3 gap-5 p-3 w-full">
           <Helmet>
-            <title>{category.categoryName} گەیاندنی خێرا | بەرهەمەکانی</title>
+            <title>گەیاندنی خێرا | بەرهەمەکانی {category.categoryName}</title>
           </Helmet>
 
           <div className="col-span-2">
