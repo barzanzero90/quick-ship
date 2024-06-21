@@ -5,6 +5,7 @@ import { useProducts } from "../context/ProductsContext";
 import ProductCard from "../components/ProductCard";
 import { Helmet } from "react-helmet";
 import AddToCartModal from "../components/modals/AddToCartModal";
+import { CATEGORIESACTIONS } from "../actions/categoriesActions";
 
 const ProductCategoryPage = () => {
   const { categorySlug } = useParams();
@@ -27,7 +28,7 @@ const ProductCategoryPage = () => {
     getProductsByCategory();
   }, [categories, categorySlug, getSubCategories, subCategories]);
 
-   // Reset the selectedSubCategory when categorySlug changes
+  // Reset the selectedSubCategory when categorySlug changes
   useEffect(() => {
     setSelectedSubCategory(null);
   }, [categorySlug]);
@@ -99,6 +100,7 @@ const ProductCategoryPage = () => {
                   هەموو
                 </button>
               </div>
+
               {subCategories.map((subCategory, index) => (
                 <div
                   key={index}

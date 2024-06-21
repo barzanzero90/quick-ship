@@ -230,10 +230,12 @@ const AddToCartModal = ({
               </>
             ) : (
               <div className="flex flex-col justify-center items-center gap-2">
-                <p className="text-xl">{FormatMoney(product.productPrice)}</p>
+                <p className="text-xl">
+                  {FormatMoney(product.productPrice)} : نرخ
+                </p>
                 <p>
-                  کۆی گستی نرخ : {FormatMoney(quantity * product.productPrice)}{" "}
-                  IQD
+                  {FormatMoney(quantity * product.productPrice)} IQD : کۆی گستی
+                  نرخ
                 </p>
               </div>
             )}{" "}

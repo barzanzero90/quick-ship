@@ -33,17 +33,19 @@ function categoriesReducer(state, action) {
       return { ...state };
 
     case CATEGORIESACTIONS.SET_ERROR:
-      return { ...state, payload: action.payload };
+      return { ...state, loading: false, error: action.payload };
 
     case CATEGORIESACTIONS.SET_CATEGORIES:
       return {
         ...state,
+        loading: false,
         categories: action.payload,
       };
 
     case CATEGORIESACTIONS.SET_SUB_CATEGORIES:
       return {
         ...state,
+        loading: false,
         subCategories: action.payload,
       };
 
@@ -134,7 +136,6 @@ export function CategoriesProvider({ children }) {
 
   const getSubCategories = async (categoryId) => {
     try {
-      dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: true });
       const subCategoriesCollection = collection(
         db,
         `categories/${categoryId}/subCategories`
@@ -150,7 +151,6 @@ export function CategoriesProvider({ children }) {
             type: CATEGORIESACTIONS.SET_SUB_CATEGORIES,
             payload: subCategories,
           });
-          dispatch({ type: CATEGORIESACTIONS.SET_LOADING, payload: false });
         }
       );
     } catch (error) {
@@ -175,7 +175,9 @@ export function CategoriesProvider({ children }) {
   };
 
   const contextData = {
+    loading: state.loading,
     categories: state.categories,
+    error: state.error,
     addCategory,
     deleteCategory,
     addSubCategory,

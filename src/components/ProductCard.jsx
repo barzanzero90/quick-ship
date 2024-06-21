@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FormatMoney } from "../utils/FormatMoney";
 import { useProducts } from "../context/ProductsContext";
 import { useAuth } from "../context/AuthContext";
-import AddToCartModal from "./modals/AddToCartModal";
 import { ReverseTruncate } from "../utils/ReverseTruncate";
 
 const ProductCard = ({ product, onAddToCart }) => {
@@ -27,12 +26,21 @@ const ProductCard = ({ product, onAddToCart }) => {
   return (
     <div className="relative w-[250px] h-[300px]">
       <Link to={`/product/${product.id}`}>
-        <img
-          src={product.productThumbnailImageURL}
-          loading="lazy"
-          className="w-full h-full rounded-md object-cover"
-          alt=""
-        />
+        {product.productThumbnailImageURL ? (
+          <img
+            src={product.productThumbnailImageURL}
+            loading="lazy"
+            className="w-full h-full rounded-md object-cover"
+            alt=""
+          />
+        ) : (
+          <div
+            className="flex flex-col gap-2 justify-center items-center"
+            style={{ zIndex: 999 }}
+          >
+            <div className="loader"></div>
+          </div>
+        )}
       </Link>
 
       <div className="absolute top-0 right-0 w-full p-2 flex flex-row-reverse justify-between items-center">
